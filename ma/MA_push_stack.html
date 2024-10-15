@@ -1,0 +1,59 @@
+<BODY><PRE>
+
+
+     MA_PUSH_STACK
+
+
+     <B>NAME</B>
+	  MA_push_stack	- allocate a stack block
+
+     <B>C SYNOPSIS</B>
+	  #include "macdecls.h"
+
+	  Boolean MA_push_stack(datatype, nelem, name, memhandle)
+	      Integer	  datatype;	  /* read-only */
+	      Integer	  nelem;	  /* read-only */
+	      char	  *name;	  /* read-only */
+	      Integer	  *memhandle;	  /* write-only	*/
+
+     <B>FORTRAN SYNOPSIS</B>
+	  #include "mafdecls.h"
+
+	  logical function MA_push_stack(datatype, nelem, name,
+	  memhandle)
+	      integer	  datatype
+	      integer	  nelem
+	      character*(*) name
+	      integer	  memhandle
+
+     <B>DESCRIPTION</B>
+	  MA_push_stack() allocates a stack block large	enough to hold
+	  <I>nelem</I>	elements of type <I>datatype </I>and associates <I>name </I>with the
+	  block	for debugging purposes.	A handle for the block is
+	  returned in <I>memhandle</I>.
+
+     <B>DIAGNOSTICS</B>
+	  block	'%s', MA not yet initialized
+	       MA_init() must be called	before this routine is called.
+	  block	'%s', invalid datatype:	%d
+	       <I>datatype</I>	must be	one of those listed in macdecls.h or
+	       mafdecls.h.
+	  block	'%s', invalid nelem: %d
+	       <I>nelem </I>must be greater than zero.
+	  block	'%s', not enough space to allocate %d bytes
+	       Recovery	may be attempted by deallocating unneeded
+	       blocks and resubmitting the request, or the application
+	       may be rewritten	to request more	memory initially in
+	       the call	to MA_init().
+
+     <B>RETURN VALUE</B>
+	  C: MA_TRUE upon success, MA_FALSE upon failure.
+	  FORTRAN: .true. upon success,	.false.	upon failure.
+
+     <B>SEE ALSO</B>
+	  MA(3), MA_chop_stack(3), MA_get_index(3), MA_get_pointer(3),
+	  MA_inquire_avail(3), MA_inquire_stack(3), MA_pop_stack(3),
+	  MA_push_get(3)
+
+     <B>AUTHOR</B>
+	  Gregory S. Thomas, Pacific Northwest Laboratory

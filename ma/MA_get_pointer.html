@@ -1,0 +1,80 @@
+<BODY><PRE>
+
+
+     MA_GET_POINTER
+
+
+     <B>NAME</B>
+	  MA_get_pointer - get the base	pointer	for a block
+
+     <B>C SYNOPSIS</B>
+	  #include "macdecls.h"
+
+	  Boolean MA_get_pointer(memhandle, pointer)
+	      Integer	  memhandle;	  /* read-only */
+	      Pointer	  *pointer;	  /* write-only	*/
+
+     <B>FORTRAN SYNOPSIS</B>
+	  Not available.
+
+     <B>DESCRIPTION</B>
+	  MA_get_pointer() returns in <I>pointer </I>the base pointer for the
+	  block	corresponding to the handle <I>memhandle </I>(which was
+	  returned by MA_allocate_heap() or MA_push_stack() when the
+	  block	was allocated).
+
+     <B>USAGE</B>
+	  The following	C code illustrates the use of MA_get_pointer()
+	  by allocating	a block	of 5 integers on the heap and then
+	  storing values into the integers.
+
+	  #include "macdecls.h"
+
+	      Boolean ok;
+	      Integer mhandle;
+	      Pointer pointer;
+	      int     i;
+
+	      ok = MA_allocate_heap(MT_INT, 5, "heap int block",
+	  &ampmhandle);
+	      if (ok)
+	      {
+		  ok = MA_get_pointer(mhandle, &amppointer);
+		  if (ok)
+		      for (i = 0; i &lt 5; i++)
+			  *((int *)pointer + i)	= 0;
+	      }
+
+     <B>DIAGNOSTICS</B>
+	  invalid memhandle: %d
+	       <I>memhandle </I>is not	a valid	handle.
+	  invalid checksum for memhandle %d (name: '%s')
+	       The block's computed checksum does not match its	stored
+	       checksum. This indicates	that the block has been
+	       corrupted by having its internal	state overwritten.
+	  invalid guard(s) for memhandle %d (name: '%s')
+	       This indicates that the block has been corrupted	by
+	       being overwritten at one	or both	ends. The likely cause
+	       of this is an application indexing bug.
+	  memhandle %d (name: '%s') not	in heap	or stack
+	       The block is not	currently allocated in the heap	or the
+	       stack.
+
+	  Other	diagnostics are	possible. If seen, they	indicate
+	  corruption of	the internal state of MA, caused by bugs in
+	  either MA or the application.
+
+     <B>RETURN VALUE</B>
+	  C: MA_TRUE upon success, MA_FALSE upon failure.
+	  FORTRAN: Not available.
+
+     <B>NOTES</B>
+	  MA_get_pointer() is not available in FORTRAN,	because
+	  FORTRAN does not support pointers.
+
+     <B>SEE ALSO</B>
+	  MA(3), MA_alloc_get(3), MA_allocate_heap(3),
+	  MA_get_index(3), MA_push_get(3), MA_push_stack(3)
+
+     <B>AUTHOR</B>
+	  Gregory S. Thomas, Pacific Northwest Laboratory

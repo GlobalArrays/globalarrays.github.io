@@ -1,0 +1,40 @@
+<BODY><PRE>
+
+
+     MA_PRINT_STATS
+
+
+     <B>NAME</B>
+	  MA_print_stats - print MA usage statistics on	the standard
+	  output (stdout)
+
+     <B>C SYNOPSIS</B>
+	  #include "macdecls.h"
+
+	  void MA_print_stats()
+
+     <B>FORTRAN SYNOPSIS</B>
+	  #include "mafdecls.h"
+
+	  subroutine MA_print_stats
+
+     <B>DESCRIPTION</B>
+	  MA_print_stats() prints MA allocation	statistics (current
+	  and maximum number of	blocks and total bytes for heap	and
+	  stack) and calls per MA routine on the standard output
+	  (stdout).
+
+     <B>DIAGNOSTICS</B>
+	  unavailable; recompile MA with -DSTATS
+	       To use this routine, MA must be compiled	with cpp
+	       option -DSTATS.
+
+     <B>RETURN VALUE</B>
+	  C: None.
+	  FORTRAN: None.
+
+     <B>SEE ALSO</B>
+	  MA(3), MA_summarize_allocated_blocks(3)
+
+     <B>AUTHOR</B>
+	  Gregory S. Thomas, Pacific Northwest Laboratory

@@ -1,0 +1,128 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 [en] (WinNT; I) [Netscape]">
+   <TITLE>Disk Resident Arrays</TITLE>
+<!-- DO NOT EDIT:  this is a cleared public file -->
+</HEAD>
+<BODY BGCOLOR="#F0FFF0" LINK="#0000EE" VLINK="#551A8B">
+
+<CENTER><IMG SRC="dra_header.gif" NATURALSIZEFLAG="0" HEIGHT=123 WIDTH=639 ALIGN=TOP></CENTER>
+
+
+<P><FONT SIZE=-1>Disk Resident Arrays (DRA) extend the <A HREF="http://www.emsl.pnl.gov:2080/ga.html">Global
+Arrays</A> (GA) Non-Uniform Memory Access (NUMA) programming model to disk.
+The library encapsulates the details of data layout, addressing and I/O
+transfer in disk arrays objects. Disk resident arrays resemble global arrays
+except that they reside on the disk instead of the main memory.</FONT>
+<CENTER></CENTER>
+
+<CENTER><IMG SRC="numa.gif" NATURALSIZEFLAG="0" HEIGHT=219 WIDTH=439 ALIGN=TOP></CENTER>
+
+
+<P><FONT SIZE=-1>The Disk Arrays library is a part of a joint project between
+Pacific Northwest National Laboratory and Argonne National Laboratory on
+the parallel I/O for chemistry applications, <A HREF="/pario">ChemIO</A>.</FONT>
+
+<P><FONT SIZE=-1>A <A HREF="ftp://ftp.pnl.gov/pub/permanent/global/frontiers.ps.Z">paper</A>
+describing DRA in more details as is available.&nbsp;</FONT><!C- PNNL clearance number: PNNL-SA-17315 >
+
+<P><FONT SIZE=-1>A <A HREF="DRAapi.html">documentation</A> for all DRA
+functions provides specific information about the programming interface.</FONT>
+<H3>
+<I><FONT COLOR="#000080">Disk Resident Arrays Model</FONT></I></H3>
+
+<UL>
+<LI>
+<FONT SIZE=-1>Data can be transfered (copied) between disk and global memory.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>I/O operations have nonblocking interface to allow overlapping
+of I/O with computations.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>All I/O operations are collective.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>Either whole or sections of global arrays can be transferred
+between GA memory and the disk.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>Reshaping and transpose operation are allowed during the
+transfer.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>Disk resident arrays might be temporary or persistent (saved
+after program termination and available in next runs).</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>Persistent disk arrays can be accessed by any program executing
+on arbitrary number of processors.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>Distribution and internal data layout on the disk is optimized
+for large data transfer.</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>Hints provided by the user are utilized to guide optimization
+of the library performance for the specific I/O patterns.</FONT></LI>
+</UL>
+
+<H3>
+<I><FONT COLOR="#000080">Generic Applications</FONT></I></H3>
+<FONT SIZE=-1>Disk Resident Arrays can be employed to implement user-controlled
+<I>virtual memory</I>. Arrays that are to big to fit in the aggregate main
+memory of the system can be stored in Disk Array objects on the disk. Sections
+of the disk arrays can be transfered (cached) in main memory and used in
+the computations as needed.</FONT>
+
+<P><FONT SIZE=-1>Another possible application of disk resident arrays is
+<I>checkpointing</I> of programs that use distributed arrays.</FONT>
+<H3>
+<I><FONT COLOR="#000080">Implementation Status</FONT></I></H3>
+<FONT SIZE=-1>The Disk Resident Arrays library has been implemented on
+the Intel Paragon (PFS), IBM SP (PIOFS and local disks), Cray T3D, KSR-1,
+SGI Power Challenge, and networks of workstations. A public domain release
+of DRA library is planned for Fall of 1996.</FONT>
+<H3>
+<I><FONT COLOR="#000080">Performance</FONT></I></H3>
+<FONT SIZE=-1>In the benchmark, a 5000x5000 section of a 10000x10000 double
+precision matrix is copied between a distributed array (in memory) and
+disk resident array (stored on disk). Peformance of aligned and unaligned
+(w.r.t data layout on disk) requests is shown.</FONT>
+<CENTER></CENTER>
+
+<CENTER><IMG SRC="dra_splocal.gif" NATURALSIZEFLAG="0" HEIGHT=338 WIDTH=458 ALIGN=BOTTOM></CENTER>
+
+<CENTER></CENTER>
+
+<CENTER><I><FONT SIZE=-1>DRA Performance on the IBM SP-1.5 (local disk
+implementation)</FONT></I></CENTER>
+
+
+<P><FONT SIZE=-1>This figure shows performance of the implementation on
+top of multiple independent disks located at individual nodes of the IBM
+SP-1.5 at Argonne. As more processors are involved, the aggregate bandwidth
+grows since the DRA uses a larger number of disks. The AIX read/write bandwidth
+to each disk is 1.5-1.0 MB/s.</FONT>
+<CENTER></CENTER>
+
+<CENTER><IMG SRC="dra_paragon.gif" NATURALSIZEFLAG="0" HEIGHT=340 WIDTH=517 ALIGN=BOTTOM></CENTER>
+
+<CENTER></CENTER>
+
+<CENTER><I><FONT SIZE=-1>DRA performance on the Intel Paragon</FONT></I></CENTER>
+
+
+<P><FONT SIZE=-1>This figure shows the performance on a 512-node Intel
+Paragon at Caltech under PIOFS. The measurements were made in January 1996.</FONT>
+<H3>
+</H3>
+
+<DIV ALIGN=right>
+<ADDRESS>
+<FONT COLOR="#000080"><FONT SIZE=-2>Jarek Nieplocha &lt;j_nieplocha@pnl.gov>
+12.13.1996</FONT></FONT><FONT SIZE=-1></FONT></ADDRESS></DIV>
+
+</BODY>
+</HTML>

@@ -1,0 +1,78 @@
+---
+layout: default
+---
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+    <head>
+        <title>PNNL: TCGMSG</title>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <meta name="keywords" content="PNNL, Global Arrays, EMSL" />
+        
+    </head>
+    <body>
+        <div id="page">
+            {% include shared/header.inc %}
+            
+            <div id="container">
+                <div id="main">
+
+<h1>TCGMSG-MPI</h1>
+
+<p>TCGMSG-MPI library is an implementation of  the TCGMSG message passing
+programming interface on top of the MPI (Message Passing Interface) and system
+specific resources.  It has been developed to aid in migration of existing
+TCGMSG applications to the current message passing standard interface.By
+employing TCGMSG-MPI, it becomes possible to use both MPI and TCGMSG interfaces
+in  the same application.</p>
+
+<p>TCGMSG offers a much smaller set of operations than MPI. However,  some of
+its operations do not have counterparts in MPI. They include:</p>
+
+<ul>
+    <li><em>nxtval</em> (a shared memory counter with atomic updates, often
+    used in dynamic load balancing algorithms)</li>
+    <li><em>pfcopy</em> (copies content of a  sequential file to all
+    processes)</li>
+    <li><em>mitob, mdtob, ...</em>(portable Fortran equivalents of the C sizeof
+    operator)</li>
+</ul>
+
+<p>The nxtval operation in TCGMSG-MPI is implemented on different platforms
+using:</p>
+
+<ul>
+  <li>shared memory and mutexes or semaphores (SGI Origin-X),</li>
+  <li>interrupt receive (IBM SP under the MPL and signal-based implementation
+  of MPI library, Intel NX),</li>
+  <li>atomic read-modify-write (IBM SP under the LAPI communication library and
+  thread-safe MPI),</li>
+  <li>SHMEM library (Cray T3D/E),</li>
+  <li>MPlib on Fujitsu VX/VPP, or</li>
+  <li>dedicated MPI process (nxtval server implemented in a manner similar to
+  described in Section 7.1 of the "Using MPI" book by Gropp, Lusk and
+  Skjellum)</li>
+</ul>
+
+<p>The nxtval server implementation is portable but least efficient. It also
+removes one process from the MPI process group that runs the application
+code.</p>
+
+<h2>Other Referenes</h2>
+
+<ul>
+  <li>TCGMSG programming interface</li>
+  <li>Section 9.9 of the "Using MPI" book on porting TCGMSG codes to MPI</li>
+</ul>
+
+                </div>
+            </div>
+
+            <div id="rightCol">
+                
+                {% include shared/rightnav_tcgmsg.inc %}
+                
+            </div>
+            
+        </div>
+    </body>
+</html>

@@ -1,0 +1,97 @@
+<BODY><PRE>
+
+
+     MA_ALLOC_GET 
+
+
+     <B>NAME</B>
+	  MA_alloc_get - allocate a heap block and get the
+	  corresponding	base index
+
+     <B>C SYNOPSIS</B>
+	  #include "macdecls.h"
+
+	  Boolean MA_alloc_get(datatype, nelem,	name, memhandle,
+	  index)
+	      Integer	  datatype;	  /* read-only */
+	      Integer	  nelem;	  /* read-only */
+	      char	  *name;	  /* read-only */
+	      Integer	  *memhandle;	  /* write-only	*/
+	      Integer	  *index;	  /* write-only	*/
+
+     <B>FORTRAN SYNOPSIS</B>
+	  #include "mafdecls.h"
+
+	  logical function MA_alloc_get(datatype, nelem, name,
+	  memhandle, index)
+	      integer	  datatype
+	      integer	  nelem
+	      character*(*) name
+	      integer	  memhandle
+	      integer	  index
+
+     <B>DESCRIPTION</B>
+	  MA_alloc_get() is a convenience function that	combines
+	  MA_allocate_heap() and MA_get_index(). MA_alloc_get()
+	  allocates a heap block large enough to hold <I>nelem </I>elements
+	  of type <I>datatype </I>and associates <I>name </I>with the block for
+	  debugging purposes. A	handle for the block is	returned in
+	  <I>memhandle </I>and	the base index for the type-specific data
+	  array	that is	appropriate for	the block is returned in
+	  <I>index</I>.
+
+     <B>USAGE</B>
+	  The following	FORTRAN	code illustrates the use of
+	  MA_alloc_get() by allocating a block of 5 integers on	the
+	  heap and then	storing	values into the	integers.
+
+	  #include "mafdecls.h"
+
+	      logical ok
+	      integer mhandle
+	      integer index
+	      integer i
+
+	      ok = MA_alloc_get(MT_INT,	5, 'heap int block', mhandle, index)
+	      if (ok) then
+		  do 10	i = 0, 4
+		      int_mb(index + i)	= 0
+	  10	  continue
+	      endif
+
+     <B>DIAGNOSTICS</B>
+	  block	'%s', MA not yet initialized
+	       MA_init() must be called	before this routine is called.
+	  block	'%s', invalid datatype:	%d
+	       <I>datatype</I>	must be	one of those listed in macdecls.h or
+	       mafdecls.h.
+	  block	'%s', invalid nelem: %d
+	       <I>nelem </I>must be greater than zero.
+	  block	'%s', not enough space to allocate %d bytes
+	       Recovery	may be attempted by deallocating unneeded
+	       blocks and resubmitting the request, or the application
+	       may be rewritten	to request more	memory initially in
+	       the call	to MA_init().
+
+	  Other	diagnostics are	possible. If seen, they	indicate
+	  corruption of	the internal state of MA, caused by bugs in
+	  either MA or the application.
+
+     <B>RETURN VALUE</B>
+	  C: MA_TRUE upon success, MA_FALSE upon failure.
+	  FORTRAN: .true. upon success,	.false.	upon failure.
+
+     <B>NOTES</B>
+	  Type-specific	data arrays are	not yet	available in C,	so
+	  employ pointers instead of indices by	using
+	  MA_allocate_heap() and MA_get_pointer() instead of
+	  MA_alloc_get().
+
+
+     <B>SEE ALSO</B>
+	  MA(3), MA_allocate_heap(3), MA_free_heap(3),
+	  MA_get_index(3), MA_get_pointer(3), MA_inquire_avail(3),
+	  MA_inquire_heap(3)
+
+     <B>AUTHOR</B>
+	  Gregory S. Thomas, Pacific Northwest

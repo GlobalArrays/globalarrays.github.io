@@ -1,0 +1,116 @@
+---
+layout: default
+---
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+    <head>
+        <title>PNNL: ChemIO, Disk Resident Arrays</title>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <meta name="keywords" content="PNNL, Global Arrays, EMSL" />
+        
+    </head>
+    <body>
+        <div id="page">
+            {% include shared/header.inc %}
+            
+            <div id="container">
+                <div id="main">
+
+<h1>ChemIO: Disk Resident Arrays</h1>
+
+<p>Resident Arrays (DRA) extend the Global Arrays (GA) Non-Uniform Memory
+Access (NUMA) programming model to disk. The library encapsulates the details
+of data layout, addressing and I/O transfer in disk arrays objects. Disk
+resident arrays resemble global arrays except that they reside on the disk
+instead of the main memory.</p>
+
+<img src="/pario/images/numa.gif"/>
+
+<p>The Disk Arrays library is a part of a joint project between Pacific
+Northwest National Laboratory and Argonne National Laboratory on the parallel
+I/O for chemistry applications, ChemIO.</p>
+
+<p>A <a href="/papers/frontiers.pdf">paper</a> describing DRA in
+more detail.</p>
+
+<p>Documentation is available for all DRA functions and provides specific
+information about the programming interface.</p>
+
+<a href="DRAapi.html">Fortran interface</a>
+
+<a href="DRA_capi.html">C interface</a>
+
+<h2>Disk Resident Arrays Model</h2>
+
+<ul>
+    <li>Data can be transfered (copied) between disk and global memory.</li>
+    <li>I/O operations have nonblocking interface to allow overlapping of I/O
+    with computations.</li>
+    <li>All I/O operations are collective.</li>
+    <li>Either whole or sections of global arrays can be transferred between GA
+    memory and the disk.</li>
+    <li>Reshaping and transpose operation are allowed during the transfer.</li>
+    <li>Disk resident arrays might be temporary or persistent (saved after
+    program termination and available in next runs).</li>
+    <li>Persistent disk arrays can be accessed by any program executing on
+    arbitrary number of processors.</li>
+    <li>Distribution and internal data layout on the disk is optimized for
+    large data transfer.</li>
+    <li>Hints provided by the user are utilized to guide optimization of the
+    library performance for the specific I/O patterns.</li>
+</ul>
+
+<h2>Generic Applications</h2>
+
+<p>Disk Resident Arrays can be employed to implement user-controlled virtual
+memory. Arrays that are to big to fit in the aggregate main memory of the
+system can be stored in Disk Array objects on the disk. Sections of the disk
+arrays can be transfered (cached) in main memory and used in the computations
+as needed.</p>
+
+<p>Another possible application of disk resident arrays is checkpointing of
+programs that use distributed arrays.</p>
+
+<h2>Implementation Status</h2>
+
+<p>The Disk Resident Arrays library has been implemented on the Intel Paragon
+(PFS), IBM SP (PIOFS and local disks), Cray T3D, KSR-1, SGI Power Challenge,
+and networks of workstations. A public domain release of DRA library is planned
+for Fall of 1996.</p>
+
+<h2>Performance</h2>
+
+<p>In the benchmark, a 5000x5000 section of a 10000x10000 double precision
+matrix is copied between a distributed array (in memory) and disk resident
+array (stored on disk).  Peformance of aligned and unaligned (w.r.t data layout
+on disk) requests is shown.</p>
+
+<img src="/pario/images/dra.splocal.gif"/>
+
+<em>DRA Performance on the IBM SP-1.5 (local disk implementation)</em>
+
+<p>This figure shows performance of the implementation on top of multiple
+independent disks located at individual nodes of the IBM SP-1.5 at Argonne. As
+more processors are involved, the aggregate bandwidth grows since the DRA uses
+a larger number of disks. The AIX read/write bandwidth to each disk is 1.5-1.0
+MB/s.</p>
+
+<img src="/pario/images/dra.paragon.gif"/>
+
+<em>DRA performance on the Intel Paragon</em>
+
+<p>This figure shows the performance on a 512-node Intel Paragon at Caltech
+under PIOFS. The measurements were made in January 1996.</p>
+
+                </div>
+            </div>
+
+            <div id="rightCol">
+                
+                {% include shared/rightnav_pario.inc %}
+                
+            </div>
+            
+        </div>
+    </body>
+</html>

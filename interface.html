@@ -1,0 +1,74 @@
+---
+layout: default
+---
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+    <head>
+        <title>Global Arrays Toolkit: Interface to Other Software</title>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+        <meta  name="description" content="The Global Arrays (GA) toolkit
+        provides an efficient and portable shared-memory programming interface
+        for distributed-memory computers." />
+        <meta name="keywords" content="PNNL, Global Arrays, EMSL" />
+        
+    </head>
+    <body>
+        <div id="page">
+            {% include shared/header.inc %}
+            
+            <div id="container">
+                <div id="main">
+
+<h1>Interface to Other Software</h1>
+
+<h2>Linear Algebra</h2>
+
+<p>At present time, GA toolkit contains interfaces to linear algebra
+libraries:</p>
+
+<ul>
+    <li><a href="http://www.netlib.org/scalapack/index.html" title="Offsite link to The ScaLAPACK Project website">ScaLAPACK</a></li>
+    <li><a href="peigs.html">PeIGS</a> parallel eigensolver library</li>
+    <li><a href="http://www.cs.utexas.edu/users/rvdg/abstracts/SUMMA.html" title="Offsite link to SUMMA: Scalable Universal Matrix Multiplication Algorithm website">SUMMA</a> parallel matrix multiplication</li>
+    <li><a href="petsc.html">PETSc</a> partial differential equation solvers</li>
+</ul>
+
+<h2>Computational Steering and Visualization</h2>
+
+<ul>
+    <li><a href="cumulvs.html">CUMULVS:</a> a software framework that enables
+    programmers to incorporate fault-tolerance, interactive visualization and
+    computational steering into existing parallel programs.</li>
+</ul>
+
+<h2>Message Passing</h2>
+
+<p>The current implementation of the GA toolkit is configurable to run with
+either the
+<a href="http://www.mcs.anl.gov/mpi/index.html"
+    title="Offsite link to MPI standard website">MPI</a>
+(Message Passing Interface) or
+<a href="/tcgmsg/">TCGMSG</a>
+portable message passing libraries. The GA could also be adopted to work with
+PVM.</p>
+
+<p>As a convenience to the programmer, GA provides its own interface to
+<em>broadcast</em> and <em>reduce</em> collective operations insensitive to the
+selection of the message-passing library.</p>
+
+<h2>Other Software</h2>
+
+<p>Some of the GA operations use the <a href="/ma/">MA</a>,
+a portable memory allocator library developed at Pacific Northwest National
+Laboratory.</p>
+
+                </div>
+            </div>
+
+
+            
+        </div>
+    </body>
+</html>

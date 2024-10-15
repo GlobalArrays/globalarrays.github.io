@@ -1,0 +1,40 @@
+<BODY><PRE>
+
+
+     MA_SET_ERROR_PRINT
+
+
+     <B>NAME</B>
+	  MA_set_error_print - set the ma_error_print flag
+
+     <B>C SYNOPSIS</B>
+	  #include "macdecls.h"
+
+	  Boolean MA_set_error_print(value)
+	      Boolean	  value;	  /* read-only */
+
+     <B>FORTRAN SYNOPSIS</B>
+	  #include "mafdecls.h"
+
+	  logical function MA_set_error_print(value)
+	      logical	  value
+
+     <B>DESCRIPTION</B>
+	  MA_set_error_print() sets the	ma_error_print flag to <I>value</I>
+	  and returns the flag's previous value. If the	ma_error_print
+	  flag is true,	then nonfatal errors cause messages to be
+	  printed on the standard error	(stderr), else they do not.
+	  (Fatal errors	always generate	messages.) The ma_error_print
+	  flag is initially true.
+
+     <B>RETURN VALUE</B>
+	  C: The previous value	of the ma_error_print flag (MA_TRUE or
+	  MA_FALSE).
+	  FORTRAN: The previous	value of the ma_error_print flag
+	  (.true. or .false.).
+
+     <B>SEE ALSO</B>
+	  MA(3), MA_set_auto_verify(3),	MA_set_hard_fail(3)
+
+     <B>AUTHOR</B>
+	  Gregory S. Thomas, Pacific Northwest Laboratory

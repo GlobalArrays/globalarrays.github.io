@@ -1,0 +1,464 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+
+<!-- DO NOT EDIT:  this is a cleared public file -->
+
+<HEAD>
+   <TITLE></TITLE>
+</HEAD>
+<BODY TEXT="#000000" BGCOLOR="#F5F5DC" LINK="#0000EE" VLINK="#551A8B" ALINK="#FF0000">
+
+<basefont size=-1>
+<H4><A NAME="pbeginf"></A>SUBROUTINE PBEGINF( )</H4>
+
+<P>This connects all the processes together and initializes the environment.
+Should be the first executable statement in the parallel program.</P>
+
+<P>
+<HR WIDTH="100%"></P>
+
+<H4><A NAME="pend"></A>SUBROUTINE PEND( )</H4>
+
+<P>Terminates parallel execution. Must be called before exit by all processes.</P>
+
+<P>This tidies up any shared resources and notifies the load balancing
+server that it has completed. PEND does return but only to allow you to
+exit normally. It is important that the FORTRAN runtime environment be
+allowed to tidy up after itself. Calling <A HREF="#pbeginf">PBEGINF</A>
+or PEND more than once per process is bound to produce some bizarre sort
+of screw up. </P>
+
+<P>
+<HR WIDTH="100%"></P>
+
+<H4><A NAME="nnodes"></A>INTEGER FUNCTION NNODES( )</H4>
+
+<P>Returns number of processes.</P>
+
+<P>
+<HR WIDTH="100%"></P>
+
+<H4><A NAME="nodeid"></A>INTEGER FUNCTION NODEID( )</H4>
+
+<P>Returns logical node no. of the current process (0,1,...,<A HREF="#nnodes">NNODES</A>()-1).</P>
+
+<P>
+<HR WIDTH="100%"></P>
+
+<H4><A NAME="llog"></A>SUBROUTINE LLOG( )</H4>
+
+<P>Opens separate logfiles in the current directory for each process. The
+files are named log.&lt;<A HREF="#nodeid">NODEID</A>()&gt;.</P>
+
+<P>
+<HR WIDTH="100%"></P>
+
+<H4><A NAME="stats"></A>SUBROUTINE STATS( )</H4>
+
+<P>Print out summary of communication statistics for calling process.</P>
+
+<P>
+<HR WIDTH="100%"></P>
+
+<H4><A NAME="mtime"></A>INTEGER FUNCTION MTIME( )</H4>
+
+<P>Return wall time from an arbitrary origin in centi-seconds.</P>
+
+<P>
+<HR WIDTH="100%"></P>
+
+<H4><A NAME="tcgtime"></A>DOUBLE PRECISION FUNCITON TCGTIME( )</H4>
+
+<P>Return wall time from an arbitrary origin in seconds as accurately as
+possible.</P>
+
+<P>
+<HR WIDTH="100%"></P>
+
+<H4><A NAME="snd"></A>SUBROUTINE SND(TYPE, BUF, LENBUF, NODE, SYNC) </H4>
+
+<UL>
+<PRE>INTEGER TYPE     [input] </PRE>
+
+<PRE>BYTE BUF(LENBUF) [input] </PRE>
+
+<PRE>INTEGER LENBUF   [input] </PRE>
+
+<PRE>INTEGER NODE     [input] </PRE>
+
+<PRE>INTEGER SYNC     [input]</PRE>
+</UL>
+
+<P>Send a message of type TYPE to node NODE. LENBUF is the length of the
+message in bytes. BUF may be any type other than a FORTRAN CHARACTER variable
+or constant. SYNC indicates synchronous (1) or asynchronous (0) communication.
+If asynchronous communication is requested the buffer may not be modified
+until <A HREF="#waitcom">WAITCOM</A> is called. This avoids having to waste
+valuable local memory taking a copy of the message. If a bit is set in
+the TYPE matching MSGDBL, MSGINT or MSGCHR then XDR is used if communication
+is over sockets. </P>
+
+<P><I>Requests for asynchronous communication on UNIX machines where it
+is not supported are quietly ignored. </I></P>
+
+<P>
+<HR WIDTH="100%"></P>
+
+<H4><A NAME="rcv"></A>SUBROUTINE RCV(TYPE, BUF, LENBUF, LENMES, NODESEL,
+NODEFROM, SYNC)</H4>
+
+<UL>
+<PRE>INTEGER TYPE     [input] </PRE>
+
+<PRE>BYTE BUF(LENBUF) [output] </PRE>
+
+<PRE>INTEGER LENBUF   [input] </PRE>
+
+<PRE>INTEGER LENMES   [output] </PRE>
+
+<PRE>INTEGER NODESEL  [input] </PRE>
+
+<PRE>INTEGER NODEFROM [output] </PRE>
+
+<PRE>INTEGER SYNC     [input]</PRE>
+</UL>
+
+<P>Receive a message of type TYPE from node NODESEL. LENBUF is the length
+of the receiving buffer in bytes. LENMES returns the length of the message
+received. An error results if the buffer is not large enough. NODEFROM
+returns the node from which the message was received. If the NODESEL is
+specified as -1 then the next node to send to this process is chosen. The
+selection of the 'next' process is guaranteed to be fair. The length of
+the buffer is checked and the type of the message must agree with that
+being received (there is only one channel between processes so messages
+are received in the order sent). BUF may be of any type other than CHARACTER.
+SYNC indicates synchronous (1) or asynchronous (0) communication. If a
+bit is set in the TYPE matching MSGDBL, MSGINT or MSGCHR then XDR is used
+if communication is over sockets. </P>
+
+<P><I>Requests for asynchronous communication on UNIX machines where it
+is not supported are quietly ignored.</I> </P>
+
+<P>
+<HR WIDTH="100%"></P>
+
+<H4><A NAME="probe"></A>INTEGER FUNCTION PROBE(TYPE, NODE) </H4>
+
+<UL>
+<PRE>INTEGER TYPE     [input] </PRE>
+
+<PRE>INTEGER NODE     [input]</PRE>
+</UL>
+
+<P>Return 1/0 for TRUE/FALSE if a message of the given type is available
+from the given node. If node is specified as -1 then a message of the given
+type from any node will match (note that a wildcard probe is much more
+expensive than probing a specific node).</P>
+
+<P>
+<HR WIDTH="100%"></P>
+
+<H4><A NAME="brdcst"></A>SUBROUTINE BRDCST(TYPE, BUF, LENBUF, IFROM) </H4>
+
+<UL>
+<PRE>INTEGER TYPE     [input] </PRE>
+
+<PRE>BYTE BUF(LENBUF) [input/output] </PRE>
+
+<PRE>INTEGER LENBUF   [input] </PRE>
+
+<PRE>INTEGER IFROM    [input]</PRE>
+</UL>
+
+<P>Broadcast from process IFROM to all other processes a message of type
+TYPE and length LENBUF. All processes call this routine which uses an optimized
+algorithm to distribute the data in O(log p) time. If a bit is set in the
+TYPE matching MSGDBL, MSGINT or MSGCHR then XDR is used if communication
+is over sockets. Note that LENBUF presently must have the correct value
+on the originating and receiving nodes. This call may be modified to include
+an extra parameter with the function of LENMES in the RCV() syntax.</P>
+
+<P>
+<HR WIDTH="100%"></P>
+
+<H4><A NAME="synch"></A>SUBROUTINE SYNCH(TYPE) </H4>
+
+<UL>
+<PRE>INTEGER TYPE    [input]</PRE>
+</UL>
+
+<P>Synchronize all processes by exchanging messages of the given type in
+time O(log p). Internally might use messages with TYPE tag.</P>
+
+<P>
+<HR WIDTH="100%"></P>
+
+<H4><A NAME="setdbg"></A>SUBROUTINE SETDBG(ONOFF) </H4>
+
+<UL>
+<PRE>INTEGER ONOFF   [input]</PRE>
+</UL>
+
+<P>Switch debugging output on (ONOFF=1) or off (ONOFF=0). This output is
+useful to trace messages being passed and also to help debug the message
+passing software.</P>
+
+<P>
+<HR WIDTH="100%"></P>
+
+<H4><A NAME="nxtval"></A>INTEGER FUNCTION NXTVAL(MPROC) </H4>
+
+<UL>
+<PRE>INTEGER MPROC   [input]</PRE>
+</UL>
+
+<P>This call simulates a simple shared counter by communicating with a
+dedicated server process. It returns the next counter associated with a
+single active loop (0,1,2,...). MPROC is the number of processes actively
+requesting values. After the end of the loop each process calls NXTVAL(-MPROC)
+which implements a barrier. It is used as follows:</P>
+
+<UL>
+<PRE>next = nxtval(mproc) </PRE>
+
+<PRE>do 10 i = 0,big </PRE>
+
+<UL>
+<PRE>if (i .eq. next) then </PRE>
+
+<UL>
+<PRE>... do work for iteration i </PRE>
+
+<PRE>next = nxtval(mproc) </PRE>
+</UL>
+
+<PRE>endif </PRE>
+</UL>
+
+<PRE>enddo</PRE>
+</UL>
+
+<P>Call with negative mproc to indicate end of loop ... processes c block
+here until mproc processes have registered completion. </P>
+
+<P>On most UNIX machines (A.D. 1993) the cost is approx. 0.05s per call.
+On the DELTA and IPSC the cost is less than 0.0003s assuming no contention.
+Clearly the value from NXTVAL can be used to indicate that some locally
+determined no. of iterations should be done as the overhead of NXTVAL may
+be relatively large. </P>
+
+<P>
+<HR WIDTH="100%"></P>
+
+<H4><A NAME="parerr"></A>SUBROUTINE PARERR(CODE) </H4>
+
+<UL>
+<PRE>INTEGER CODE   [input]</PRE>
+</UL>
+
+<P>Call to request error termination .. it tries to zap all the other processes
+and generally tidy up. The value of code is printed out in the error message.
+</P>
+
+<P>C programs should call ERROR_(char *message, long status).</P>
+
+<P>
+<HR WIDTH="100%"></P>
+
+<H4><A NAME="waitcom"></A>SUBROUTINE WAITCOM(NODE) </H4>
+
+<UL>
+<PRE>INTEGER NODE   [input]</PRE>
+</UL>
+
+<P>Wait for all asynchronous communication with node NODE to be completed.
+NODE=-1 implies all nodes. Currently this is only applicable to the Intel
+MPPs where the actual value of NODE is ignored and -1 assumed.</P>
+
+<P>
+<HR WIDTH="100%"></P>
+
+<H4><A NAME="dgop"></A>SUBROUTINE DGOP(TYPE, X, N, OP) </H4>
+
+<UL>
+<PRE>INTEGER TYPE          [input] </PRE>
+
+<PRE>DOUBLE PRECISION X(N) [input/output] </PRE>
+
+<PRE>CHARACTER*(*) OP      [input]</PRE>
+</UL>
+
+<P>Double Global OPeration. X(1:N) is a vector present on each process.
+DGOP 'sums' elements of X accross all nodes using the commutative operator
+OP. The result is broadcast to all nodes. Supported operations include
+'+', '*', 'max', 'min', 'absmax', 'absmin'. The use of lowerecase is presently
+necessary. XDR data translation is internally enabled.</P>
+
+<P>
+<HR WIDTH="100%"></P>
+
+<H4><A NAME="igop"></A>SUBROUTINE IGOP(TYPE, X, N, OP) </H4>
+
+<UL>
+<PRE>INTEGER TYPE       [input] </PRE>
+
+<PRE>INTEGER X(N)       [input/output] </PRE>
+
+<PRE>CHARACTER*(*) OP   [input]</PRE>
+</UL>
+
+<P>Integer Global OPeration. The integer version of <A HREF="#dgop">DGOP</A>
+described above, also include the bitwise OR operation.</P>
+
+<P>
+<HR WIDTH="100%"></P>
+
+<H4><A NAME="mitob"></A>INTEGER FUNCTION MITOB(N) </H4>
+
+<UL>
+<PRE>INTEGER N          [input]</PRE>
+</UL>
+
+<P>Returns the no. of bytes that N Fortran integers occupy.</P>
+
+<P>
+<HR WIDTH="100%"></P>
+
+<H4><A NAME="mdtob"></A>INTEGER FUNCTION MDTOB(N) </H4>
+
+<UL>
+<PRE>INTEGER N          [input]</PRE>
+</UL>
+
+<P>Returns the no. of bytes that N DOUBLE PRECISIONs occupy.</P>
+
+<P>
+<HR WIDTH="100%"></P>
+
+<H4><A NAME="mitod"></A>INTEGER FUNCTION MITOD(N) </H4>
+
+<UL>
+<PRE>INTEGER N          [input] </PRE>
+</UL>
+
+<P>Returns the minimum no. of DOUBLRE PRECSIONs numbers which representation
+in machine memory occupies as much storage as N INTEGERs.</P>
+
+<P>
+<HR WIDTH="100%"></P>
+
+<H4><A NAME="mdtoi"></A>INTEGER FUNCTION MDTOI(N) </H4>
+
+<UL>
+<PRE>INTEGER N          [input]</PRE>
+</UL>
+
+<P>Returns the minimum no. of INTEGER numbers which representation in machine
+memory occupies as much storage as N DOUBLE PRECISION numbers.</P>
+
+<P>
+<HR WIDTH="100%"></P>
+
+<H4><A NAME="pfcopy"></A>SUBROUTINE PFCOPY(TYPE, NODE0, FILENAME) </H4>
+
+<UL>
+<PRE>INTEGER TYPE           [input] </PRE>
+
+<PRE>INTEGER NODE0          [input] </PRE>
+
+<PRE>CHARACTER*(*) FILENAME [input]</PRE>
+</UL>
+
+<P>NODE0 has access to the unopened file with name in FILENAME the contents
+of which are to be copied to files known to all other processes using messages
+of type TYPE. All processes call PFCOPY() simultaneously, as for BRDCST().
+Since processes may be working in the same directory it is advisable to
+have each process use a unique file name. The file is closed at the end
+of the operation.</P>
+
+<P>If the data in the file is all of the same type (integer, double etc.)
+AND there is no additional record structure (such as that imposed by FORTRAN)
+TYPE should be set to reflect this so that data translation can occur between
+different machines (the blocking is set to accomodate this). machines (the
+blocking is set to accomodate this). Otherwise if binary transfer is not
+meaningful U'll have to write your own application specific routine.</P>
+
+<P>
+<HR WIDTH="100%"></P>
+
+<H4><A NAME="niceftn"></A>INTEGER FUNCTION NICEFTN(INCR) </H4>
+
+<UL>
+<PRE>INTEGER INCR          [input]</PRE>
+</UL>
+
+<P>Portable rapper around nice for FORTRAN users. See the local nice()
+system call man page for info. On the IPSC/DELTA this is a null operation
+and returns 0.</P>
+
+<P>
+<HR WIDTH="100%"></P>
+
+<H4><A NAME="evon"></A>SUBROUTINE EVON() </H4>
+
+<H4>SUBROUTINE EVOFF()</H4>
+
+<P>Enable/disable event logging. Each process logs events to the ASCII
+file 'events.&lt;nodeid&gt;' (with much buffering so for modest applications
+it is only dumped out at the end). This includes events such as process
+creation/termination, message passing etc. Event logging may be enabled
+just around critical sections of code. Applications may generate additional
+information with the following (FORTRAN) calls.</P>
+
+<P>
+<HR WIDTH="100%"></P>
+
+<H4><A NAME="evbgin"></A>SUBROUTINE EVBGIN(INFO) </H4>
+
+<H4>SUBROUTINE EVEND(INFO) </H4>
+
+<H4>SUBROUTINE EVENT(INFO) </H4>
+
+<UL>
+<PRE>CHARACTER*(*) INFO</PRE>
+</UL>
+
+<P>EVBGIN marks the beginning of an extended event (state?) by logging
+the message in INFO to the event file (along with a timestamp). EVEND marks
+the termination of a state similarly. These calls need not be paired for
+correct functioning, but are in the logical interpretation of the event
+file. EVENT logs the message INFO to the file with a timestamp. </P>
+
+<P><A HREF="#pbeginf">PBEGINF</A>(), if compiled with -DEVENTLOG opens
+the file 'events.&lt;nodeid&gt;' and <A HREF="#pend">PEND</A>() dumps out
+event information and closes the file. Imbetween, event logging is disabled
+by default and must be enabled by the application. </P>
+
+<UL>
+<UL>
+<UL>
+<UL>
+<UL>
+<UL>
+<UL>
+<UL>
+<UL>
+<UL>
+<UL>
+<UL>
+<PRE><FONT SIZE=-2>JN/01.21.97</FONT></PRE>
+</UL>
+</UL>
+</UL>
+</UL>
+</UL>
+</UL>
+</UL>
+</UL>
+</UL>
+</UL>
+</UL>
+</UL>
+
+</BODY>
+</HTML>

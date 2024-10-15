@@ -1,0 +1,125 @@
+---
+layout: default
+---
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+    <head>
+        <title>Global Arrays Toolkit: CUMULVS</title>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+        <meta  name="description" content="Inter-operability of Global Arrays with CUMULVS." />
+        <meta name="keywords" content="PNNL, Global Arrays, EMSL" />
+        
+    </head>
+    <body>
+        <div id="page">
+            {% include shared/header.inc %}
+            
+            <div id="container">
+                <div id="main">
+
+<h1>Inter-operability of Global Arrays with CUMULVS</h1>
+
+<p><a href="http://www.epm.ornl.gov/cs/cumulvs.html" title="Offsite">CUMULVS
+    (Collaborative User Migration User Library for Visualization and
+    Steering)</a> is developed by the <a href="http://www.ornl.gov/"
+    title="Offsite">Oak Ridge National Laboratory</a>. It is part of the <a
+    href="http://acts.nersc.gov/tools.html" title="Offsite">ACTS Toolkit</a> in
+the DOE 2000 Initiative. CUMULVS is a software framework that enables
+programmers to incorporate fault-tolerance, interactive visualization and
+computational steering into existing parallel programs.</p>
+
+<p>The following summarizes the inter-operability status of Global Arrays and
+CUMULVS:</p>
+
+<h2>Inter-operability</h2>
+
+<p>Global Arrays is inter-operable with CUMULVS's computational steering
+capability. In an application using Global Arrays, steering parameters can be
+defined for a CUMULVS front-end viewer and manipulated by the viewer during the
+lifetime of execution. The packages used in the testing are:</p>
+
+<ul>
+    <li>Global Arrays Version 3.0</li>
+    <li>CUMULVS Version 1.0</li>
+</ul>
+
+<p>The Global Arrays can be configured to work with one of several
+communication libraries. The one we used was based on MPI. The CUMULVS is based
+on PVM (Version 3.3.11 or later).</p>
+
+<h2>Instructions for using CUMULVS in a Global Arrays application</h2>
+
+<p><a
+    href="http://www.epm.ornl.gov/cs/download/cumulvs.user.guide.ps.Z">CUMULVS
+    User's Guide</a> provides instructions of how to use CUMULVS, and the
+definitions of library functions. Examples that come with the CUMULVS package
+serve as a good starting point, which give the user some insight of what to do,
+even though they are written in PVM. The following is quoted from the CUMULVS
+User's Guide:</p>
+
+<p>A typical statement sequence that a programmer would follow is</p>
+
+<ul>
+    <li>
+    Initialize CUMULVS data structures (<tt>stv_init()</tt>)<br />
+    Define data decomposition (<tt>stv_decompDefine()</tt>)<br />
+    Define data field with a previously defined
+    decomposition (<tt>stv_fieldDefine()</tt>)<br />
+    Define steering parameters (<tt>stv_paramDefine()</tt>)
+    </li>
+
+    <li>
+    Start main iterative loop<br />
+    &lt;usual calculation&gt;<br />
+    <em>nchanged</em> = <tt>stv_sendToFE()</tt><br />
+    &lt;program response to <i>nchanged</i> steered parameters&gt;
+    </li>
+
+    <li>End of main iterative loop</li>
+</ul>
+
+<p>Before doing anything, the environment variable <tt>STV_ROOT</tt> should be
+set, either in <tt>$HOME/.cshrc</tt> or equivalent shell startup file.  The
+value of <tt>$STV_ROOT</tt> should be the directory where CUMULVS is, as
+in:</p>
+
+<p style="margin-left: 25px; padding-top: 10px; padding-bottom: 10px;">
+<tt>setenv STV_ROOT /home/me/CUMULVS</tt>
+</p>
+
+<p>The applications should include the header files of</p>
+<p style="margin-left: 25px; padding-top: 10px; padding-bottom: 10px;">
+<tt>fpvm3.h</tt> (Fortran) or <tt>pvm3.h (C)</tt><br />
+<tt>fstv.h</tt> (Fortran) or <tt>stv.h (C)</tt>
+</p>
+
+<p>Compile the application and link it with either <tt>libfstv.a</tt> or
+<tt>libstv.a,</tt> depending on whether the application is written in Fortran
+or C.</p>
+
+<p>Next, start the pvm daemon and run the application.</p>
+
+<p>Start the viewer to manipulate the steering parameters.</p>
+
+<h2>Discussion</h2>
+
+<p>CUMULVS is fairly easy to use in a Global Arrays application. We
+successfully tested the inter-operability of Global Arrays with CUMULVS's
+computational steering capacity. The capacity of CUMULVS's visualization needs
+further investigation.</p>
+
+<p>(It would be preferable for the CUMULVS could provide a version based on MPI
+since more and more applications are using MPI nowadays. It is somewhat
+cumbersome to start the PVM daemon all the time before running the MPI-based
+applications.)</p>
+
+                </div>
+            </div>
+
+
+            
+        </div>
+    </body>
+</html>

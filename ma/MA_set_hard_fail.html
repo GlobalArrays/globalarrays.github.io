@@ -1,0 +1,39 @@
+<BODY><PRE>
+
+
+     MA_SET_HARD_FAIL
+
+
+     <B>NAME</B>
+	  MA_set_hard_fail - set the ma_hard_fail flag
+
+     <B>C SYNOPSIS</B>
+	  #include "macdecls.h"
+
+	  Boolean MA_set_hard_fail(value)
+	      Boolean	  value;	  /* read-only */
+
+     <B>FORTRAN SYNOPSIS</B>
+	  #include "mafdecls.h"
+
+	  logical function MA_set_hard_fail(value)
+	      logical	  value
+
+     <B>DESCRIPTION</B>
+	  MA_set_hard_fail() sets the ma_hard_fail flag	to <I>value </I>and
+	  returns the flag's previous value. If	the ma_hard_fail flag
+	  is true, then	any error detected by MA (including those
+	  normally considered nonfatal)	causes program termination.
+	  The ma_hard_fail flag	is initially false.
+
+     <B>RETURN VALUE</B>
+	  C: The previous value	of the ma_hard_fail flag (MA_TRUE or
+	  MA_FALSE).
+	  FORTRAN: The previous	value of the ma_hard_fail flag (.true.
+	  or .false.).
+
+     <B>SEE ALSO</B>
+	  MA(3), MA_set_auto_verify(3),	MA_set_error_print(3)
+
+     <B>AUTHOR</B>
+	  Gregory S. Thomas, Pacific Northwest Laboratory

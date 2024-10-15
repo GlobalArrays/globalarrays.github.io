@@ -1,0 +1,102 @@
+---
+layout: default
+---
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+    <head>
+        <title>PNNL: ChemIO</title>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <meta name="keywords" content="PNNL, Global Arrays, EMSL" />
+        
+    </head>
+    <body>
+        <div id="page">
+            {% include shared/header.inc %}
+            
+            <div id="container">
+                <div id="main">
+
+<h1>ChemIO</h1>
+
+<h2>High-Performance I/O for Computational Chemistry Applications</h2>
+
+<p>The ChemIO project is a joint effort of Argonne National Laboratory and
+Pacific Northwest National Laboratory. It is affiliated with a DOE Grand
+Challenge project developing Massively Parallel Methods for Computational
+Chemistry, with the multi-agency Scalable I/O Project, and with the EMSL. It
+has three main goals:</p>
+
+<ul>
+    <li>To facilitate the development of portable, high-performance
+    computational chemistry codes, by defining a standard I/O API that meets
+    chemistry requirements, and providing high-performance implementations of
+    this API on different high-performance computers;</li>
+    <li>To contribute to the understanding of requirements for standard APIs
+    for high-performance I/O, the performance that can be achieved for these
+    APIs on various high-performance computer systems, and the techniques
+    required to optimize performance on various systems; and</li>
+    <li>To investigate how the successful Global Array programming model can be
+    extended to secondary storage.</li>
+</ul>
+
+<p>Computational chemistry is an extremely interesting discipline from a
+high-performance I/O standpoint. Certain computational chemistry codes perform
+well on scalable parallel computers. They often operate on very large data sets
+and display irregular access patterns. Furthermore, many state-of-the-art
+computational chemistry codes have been engineered to perform repeated
+recomputations so that they can run in-memory on vector computers; it seems
+likely that I/O-based ("out-of-core") solutions will allow significantly better
+performance on scalable parallel computers.</p>
+
+<p>A paper accepted for publication in a special issue of The Int. Journal of
+Supercomputer Applications and High Performance Computing provides further
+details on the ChemIO project.</p>
+
+<h2>Progress, Software, and Users</h2>
+
+<p>So far we have produced a design and implementation for a chemistry I/O API,
+ChemIO, comprising three components:</p>
+
+<ul>
+    <li><a href="dra.html">Disk Resident Arrays(DRA)</a>, an extension of
+    global arrays to secondary storage;</li>
+    <li><a href="eaf.html">Exclusive Access Files (EAF)</a>, per-processor
+    private files; and</li>
+    <li><a href="sf.html">Shared Files(SF)</a>, files to which multiple
+    processors can read and write independently.</li>
+</ul>
+
+<p>All the components have asynchronous API to allow the applications overlap
+expensive I/O with computations.</p>
+
+<p>The ChemIO is implemented in a a modular fashion. The user level librarries
+(DRA, EAF, SF) are layered upon ELIO (ELementary I/O) device library that
+provides an portable interface to different file systems.</p>
+
+<p>On IBM SP, Shared Files use Distant I/O library in addition to ELIO.</p>
+
+<img src="/images/chemio.str.gif"/>
+
+<p>ChemIO code is in use by several application groups.  For example:</p>
+
+<ul>
+    <li>A group at Argonne are using ChemIO's Exclusive Access Files to build a
+    high-performance non-direct (out-of-core) SCF code (see also their
+    benchmark results)</li>
+    <li>RI-SCF and RI-MP2 programs being developed at PNNL and Syracuse use
+    DRA</li>
+    <li>semi-direct SCF implemented in NWChem (PNNL) uses EAF</li>
+</ul>
+
+                </div>
+            </div>
+
+            <div id="rightCol">
+                
+                {% include shared/rightnav_pario.inc %}
+                
+            </div>
+            
+        </div>
+    </body>
+</html>

@@ -1,0 +1,331 @@
+---
+layout: default
+---
+<!DOCTYPE html PUBLIC "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+  <meta content="text/html; charset=iso-8859-1"
+ http-equiv="Content-Type">
+  <meta content="Mozilla/4.73 [en] (X11; U; SunOS 5.8 sun4u) [Netscape]"
+ name="GENERATOR">
+  <title>Disk Resident Arrays Operations</title>
+<!-- DO NOT EDIT:  this is a cleared public file -->
+</head>
+<body background="magenta" alink="#ff0000" vlink="#55188a"
+ link="#0000ef" bgcolor="#f5f3d3" text="#000000">
+<center>
+<h3>Disk Resident Arrays</h3>
+</center>
+Disk Resident Arrays (DRA) extend the Global Arrays (GA) programming
+model
+to disk. The library encapsulates the details of data layout,
+addressing
+and I/O transfer in disk arrays objects. Disk resident arrays resemble
+global arrays except that they reside on the disk instead of the main
+memory.
+The main features of this model are:
+<ul>
+  <li>
+    <font size="-1">Data can be transfered (copied) between disk and
+global memory.</font></li>
+  <li>
+    <font size="-1">I/O operations have nonblocking interface to allow
+overlapping
+of I/O with computations.</font></li>
+  <li>
+    <font size="-1">All I/O operations are collective.</font></li>
+  <li>
+    <font size="-1">Either whole or sections of global arrays can be
+transferred
+between GA memory and the disk.</font></li>
+  <li>
+    <font size="-1">Reshaping and transpose operation are allowed
+during the
+transfer.</font></li>
+  <li>
+    <font size="-1">Disk resident arrays might be temporary or
+persistent (saved
+after program termination and available in next runs).</font></li>
+  <li>
+    <font size="-1">Persistent disk arrays can be accessed by any
+program executing
+on arbitrary number of processors.</font></li>
+  <li>
+    <font size="-1">Distribution and internal data layout on the disk
+is optimized
+for large data transfer.</font></li>
+  <li>
+    <font size="-1">Hints provided by the user are utilized to guide
+optimization
+of the library performance for the specific I/O patterns.</font></li>
+</ul>
+DRA can take advantage of a shared file system of a collection of
+independent
+filesystems accessible from individual computing nodes.
+<p>Note that DRAs make use of an internally defined data type <b>dra_size_t</b>
+to specify the dimensions and indices of DRAs in C. This data type is
+designed
+to prevent integer overflows from potentially large 1-dimensional DRAs.
+<br>
+</p>
+<hr width="100%" noshade="noshade" size="1" align="left">
+<h3><a name="dra_init"></a>dra_init</h3>
+<pre>&nbsp;&nbsp; int DRA_Init(int max_arrays, double max_array_size,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; double total_disk_space, double max_memory)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; max_arrays&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [input]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; max_array_size&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [input]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; total_disk_space&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [input]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; max_memory&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [input]</pre>
+Initializes Disk Resident Array I/O subsystem.
+<p><i>max_array_size </i>, <i>total_disk_space</i> and <i>max_memory</i>
+are given in bytes.
+</p>
+<p><i>max_memory</i> specifies how much local memory per processor the
+application is willing to provide to the DRA I/O subsystem for
+buffering.
+</p>
+<p>The value of -1 for any of input arguments means: "don't care ",
+"don't
+know" , or "use defaults ".
+</p>
+<p></p>
+<hr>
+<h3><a name="dra_terminate"></a>dra_terminate</h3>
+<pre>&nbsp;&nbsp; int DRA_Terminate()</pre>
+Close all open disk resident arrays and shut down DRA I/O subsystem.
+<br>
+<hr width="100%">
+<h3><a name="NDRA_CREATE"></a>ndra_create</h3>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp; int NDRA_Create(int type, int ndim, dra_size_t dims[], char *name,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; char *filename, int mode, dra_size_t reqdims[], int *d_a)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [input]&nbsp; ! MA type identifier<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ndim&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [input]&nbsp; ! Dimension of DRA<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dims[ndim]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [input]&nbsp; ! Dimensions of DRA<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [input]&nbsp; ! Name of DRA<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; filename&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [input]&nbsp; ! Name of file containing DRA<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mode&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [input]&nbsp; ! READ; WRITE; READ/WRITE<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; reqdims[ndim]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [input]&nbsp; ! Typical request size<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; d_a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [output] ! DRA handle</pre>
+Creates an N-dimensional DRA with specified dimensions and data <i>type</i>
+(represented by MA type handel). The dimension of the DRA is specified
+by the variable <i>ndim</i> and the physical dimensions of the DRA are
+specified in the array <i>dims</i>. The variable <i>name</i> is an
+internal
+name that can be used to identify the DRA and the variable <i>filename</i>
+represents the name of an abstract meta-file that will be used to store
+the data on disk. The variable <i>mode</i> can be used to restrict the
+behavior of the DRA and can be set using the predefined values DRA_R
+(read),
+DRA_W (write), and DRA_RW (read/write).&nbsp; The array <i>reqdims</i>
+contains the dimensions of request to the DRA; if any of the entries
+are
+set to -1, the ndra_create routine will attempt to use default values
+to
+come up with a guess for the size of this value. The variable <i>d_a</i>
+is an integer handle that is assigned to the DRA when it is created and
+can be used to access the DRA later in the program.
+<p>he data in disk resident array is implicitly initialized to 0 .
+</p>
+<p>Access permissions (read, write, read&amp; write) are set in <i>mode</i>
+. These are set using defined in the header files dra.fh (Fortran) and
+dra.h (C) preprocessor constants: DRA_R, DRA_W, DRA_RW.
+</p>
+<p>The pair [<i>rdim1</i>, <i>rdim2</i>] specifies dimensions of a
+typical
+request. The value of -1 for either of them means "unspecified". The
+layout
+of the data on the disk(s) is determined based on the values of these
+arguments.
+Performance of the DRA operations depends on the dimensions (section
+shape)
+of the requests. If data layout is optimized for column-like sections,
+performance of DRA operations for row-like sections might be seriously
+degraded. This is analogous to the effect of wrong loop ordering
+yielding
+frequent cache misses in the following example .
+</p>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; double precision a(1000, 1000)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; do i = 1, 1000<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; do j = 1, 1000<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a(i,j) = dfloat(i+j)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; enddo<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; enddo<br><br></pre>
+instead of
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; do j = 1, 1000<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; do i = 1, 1000<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a(i,j) = dfloat(i+j)&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; enddo<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; enddo<span
+ style="font-weight: bold;"></span></pre>
+<hr>
+<h3><a name="DRA_SET_DEFAULT_CONFIG"></a>dra_set_default_config</h3>
+<pre>     int DRA_Set_default_config(int numfiles, numioprocs)<br>              numfiles                  [input]<br>              numioprocs                [input]<br></pre>
+<p>This subroutine allows users to control the number of files that a
+DRA is broken up into and to control the number of processors doing IO,
+provided the DRA is being created on an open filesystem. If the DRA is<br>
+being created on local disk, then this subroutine has no effect. The
+original settings for these two variables is that both the number of
+files and the number of IO procs equals the number of SMP nodes being
+used by the calculation. Other settings can be chosen, however, to
+create DRAs composed of larger or smaller numbers of files and IO
+processors. These settings may provide better IO bandwidth on some
+platforms. The dra_set_default_config subroutine can be called multiple
+times throughout the program. Each DRA is created with whatever default
+configuration is applicable at the time of creation.</p>
+<hr style="width: 100%; height: 2px;">
+<h3><a name="dra_open"></a>dra_open</h3>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp; int DRA_Open(char *filename, int mode, int *d_a)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; filename&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [input]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mode&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [input]&nbsp; ! READ; WRITE; READ/WRITE<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; integer d_a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [output]&nbsp; ! DRA handle</pre>
+Open and assign DRA handle to disk resident array stored in DRA
+meta-file
+<i>filename.</i>Disk
+resident arrays that are created with&nbsp; <a href="#dra_create">DRA_Create</a>&nbsp;
+or&nbsp; <a href="#NDRA_CREATE">NDRA_Create</a> and saved by calling <a
+ href="#dra_close">DRA_Close</a>&nbsp;
+can be later opened and accessed by the same or different application.
+<p>Attributes of the disk resident array can be found by calling <a
+ href="#dra_inquire">DRA_Inquire</a>
+.
+</p>
+<p></p>
+<hr>
+<h3><a name="dra_write"></a>dra_write</h3>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp; int DRA_Write(int g_a, int d_a, int *request)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; g_a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [input]&nbsp; ! GA handle<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; d_a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [input]&nbsp; ! DRA handle<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; request&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [output] ! request id</pre>
+Write asynchronously specified global array to specified disk resident
+array.
+<p>The dimensions and type of arrays represented by handles <i>g_a</i>
+and <i>d_a</i> must match. If dimensions don't match,&nbsp; <a
+ href="#dra_write_section">DRA_Write_section</a>
+should be used instead.
+</p>
+<p>The operation is by definition asynchronous but it might be
+implemented
+as synchronous i.e., it would return only when the I/O is completed.
+</p>
+<p><i>request</i> can be used by&nbsp; <a href="#dra_probe">DRA_Probe</a>&nbsp;
+or <a href="#dra_wait">DRA_Wait</a>&nbsp; for completion of the
+associated
+operation.
+<br>
+</p>
+<hr width="100%">
+<p><a name="NDRA_WRITE"></a><b><font size="+2">ndra_write</font></b>
+</p>
+<p><tt>&nbsp;&nbsp;&nbsp;&nbsp; int NDRA_Write(int g_a, int d_a, int
+*request)</tt>
+<br>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+g_a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[input]&nbsp; ! GA handle</tt>
+<br>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+d_a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[input]&nbsp; ! DRA handle</tt>
+<br>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+request&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[output] ! request id</tt>
+</p>
+<p>N-dimensional asynchronous write from specified global array to
+specified
+disk resident array.
+</p>
+<p>The dimension, physical dimensions, and type of arrays represented
+by
+handles <i>g_a</i> and <i>d_a</i> must match. If the physical
+dimensions
+don't match,&nbsp; <a href="#NDRA_WRITE_SECTION">NDRA_Write_section</a>
+should be used instead.
+</p>
+<p>The operation is by definition asynchronous but it might be
+implemented
+as synchronous i.e., it would return only when the I/O is completed.
+</p>
+<p><i>request</i> can be used by&nbsp; <a href="#dra_probe">DRA_Probe</a>&nbsp;
+or <a href="#dra_wait">DRA_Wait</a>&nbsp; for completion of the
+associated
+operation.
+</p>
+<p></p>
+<hr width="100%">
+<h3><a name="NDRA_WRITE_SECTION"></a><b><font size="+2">ndra_write_section</font></b></h3>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp; int NDRA_Write_section(int transp, int g_a, int glo[], int ghi[],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int d_b, dra_size_t dlo[], dra_size_t dhi[],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int *req)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; transp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [input]&nbsp; ! transpose operator flag<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; g_a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [input]&nbsp; ! GA handle<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; glo[ndim]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [input]&nbsp; ! array of lower indices on GA<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ghi[ndim]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [input]&nbsp; ! array of upper indices on GA<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; d_b&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [input]&nbsp; ! DRA handle<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dlo[ndim]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [input]&nbsp; ! array of lower indices on DRA<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dhi[ndim]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [input]&nbsp; ! array of upper indices on DRA<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; req&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [output] ! request id</pre>
+Asynchronously write specified global array section to specified disk
+resident
+array section.
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; OP(g_a[glo:ghi]) --&gt; d_a[dlo:dhi]</pre>
+The transpose operator <i>OP</i> reverses the ordering of the the
+dimensions.
+The function returns an error if the two sections sizes are mismatched.
+See&nbsp;&nbsp; <a href="#NDRA_WRITE">NDRA_Write</a>&nbsp;&nbsp;&nbsp;
+specs for a discussion of <i>request</i>.
+<p></p>
+<hr width="100%">
+<h3><a name="NDRA_READ"></a>ndra_read</h3>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp; int NDRA_Read(int g_a, int d_a, int *request)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; g_a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [input]&nbsp; ! GA handle<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; d_a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [input]&nbsp; ! DRA handle<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; request&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [output] ! request id</pre>
+N-dimensional asynchronous read to the specified global array from the
+specified disk resident array.
+<p>The dimension, physical dimensions, and type of arrays referred to
+by
+handles <i>g_a</i> and
+<i>d_a</i> must match. If dimensions don't match,
+<a href="#NDRA_WRITE_SECTION">NDRA_Write_section</a>&nbsp;
+could be used instead.
+</p>
+<p>See&nbsp; <a href="#NDRA_WRITE">NDRA_Write</a> specs for discussion
+of <i>request
+</i>.
+</p>
+<p></p>
+<hr width="100%">
+<h3><a name="NDRA_READ_SECTION"></a>ndra_read_section</h3>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp; int NDRA_Read_section(int transp, int g_a, int glo[], int ghi[],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int d_a, dra_size_t dlo[], dra_size_t dhi[],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int *request)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; logical transp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [input]&nbsp; ! transpose operator flag<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; integer g_a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [input]&nbsp; ! GA handle<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; integer glo(ndim)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [input]&nbsp; ! array of lower indices on GA<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; integer ghi(ndim)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [input]&nbsp; ! array of upper indices on GA<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; integer d_b&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [input]&nbsp; ! DRA handle<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; integer dlo(ndim)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [input]&nbsp; ! array of lower indices on DRA<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; integer dhi(ndim)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [input]&nbsp; ! array of upper indices on DRA<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; integer request&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [output] ! request id</pre>
+N-dimensional asynchronous read to specified global array section from
+specified disk resident array section:
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; OP(d_a[dlo:dhi]) --&gt;&nbsp; g_a[glo:ghi]</pre>
+The transpose operator reverses the ordering of the dimensions. The
+function
+returns an error if the two sections sizes are mismatched.&nbsp; See <a
+ href="#NDRA_WRITE">NDRA_Write</a>&nbsp;
+specs for discussion of <i>request</i> .
+<p></p>
+<hr>
+<h3><a name="dra_probe"></a>dra_probe</h3>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp; int DRA_Probe(int request, int *compl_status)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; request&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [input]&nbsp; ! request id<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; compl_status&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [output] ! completion status</pre>
+Tests for completion of&nbsp; <a href="#NDRA_WRITE">NDRA_Write</a> / <a
+ href="#NDRA_READ">Read</a>&nbsp;
+or&nbsp; <a href="#NDRA_WRITE_SECTION">NDRA_Write</a> / <a
+ href="#NDRA_READ_SECTION">Read_section</a>
+operation which set the value passed in <i>request</i> argument.
+<p><i>compl_status </i>equals<i> </i>0 means the operation has been
+completed.
+</p>
+<p><i>compl_status </i>not equal<i> </i>0 means "not done yet ".
+</p>
+<p></p>
+<hr>
+<h3><a name="dra_wait"></a>dra_wait</h3>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp; int DRA_Wait(int request)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; request&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [input]&nbsp; ! request id</pre>
+Blocks until completion of&nbsp; <a href="#NDRA_WRITE">NDRA_Write</a>
+/
+<a href="#NDRA_READ">Read</a>&nbsp;
+or&nbsp; <a href="#NDRA_WRITE_SECTION">NDRA_Write</a> / <a
+ href="#NDRA_READ_SECTION">Read_section</a>
+operation which set the value passed in <i>request</i> argument.
+<p></p>
+<hr width="100%">
+<h3><a name="NDRA_INQUIRE"></a>ndra_inquire</h3>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp; int NDRA_Inquire(int d_a, int *type, int *ndim, dra_size_t dims[],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; char *name, char *filename)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; d_a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [input]&nbsp; ! DRA handle<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [output] ! DRA data type<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ndim&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [output] ! Dimension of DRA<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dims[ndim]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [output] ! Array of dimensions of DRA<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [output] ! DRA name<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; filename&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [output] ! DRA filename</pre>
+Return <i>type</i>, <i>dimension, dimensions,</i> <i>name</i> of
+disk resident
+array, and <i>filename</i> of DRA meta-file associated with <i>d_a</i>
+handle.
+<p></p>
+<hr>
+<h3><a name="dra_delete"></a>dra_delete</h3>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp; int DRA_Delete(int d_a)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; d_a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [input]&nbsp; ! DRA handle</pre>
+Delete a disk resident array associated with <i>d_a</i> handle.
+Invalidate
+handle. The corresponding DRA meta-file is destroyed.
+<p></p>
+<hr>
+<h3><a name="dra_close"></a>dra_close</h3>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp; int DRA_Close(int d_a)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; d_a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [input]&nbsp; ! DRA handle</pre>
+Close DRA meta-file associated with <i>d_a</i> handle and deallocate
+data
+structures corresponding to this disk array. Invalidate <i>d_a</i>
+handle.
+The array on the disk is persistent.
+<p></p>
+<hr>
+<h3><a name="dra_flick"></a>dra_flick</h3>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp; void DRA_Flick()</pre>
+Returns control to DRA for a VERY short time to improve progress of
+pending
+asynchronous operations.
+<br>
+<hr width="100%">
+<h3><a name="DRA_PRINT_INTERNALS"></a><b><font size="+2">dra_print_internals</font></b></h3>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp; void DRA_Print_internals(d_a)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; integer d_a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [input]&nbsp; ! DRA handle</pre>
+A call to this subroutine causes the program to dump all the internal
+information
+about the disk resident array to standard output. Only the information
+on processor 0 is written out.
+</body>
+</html>

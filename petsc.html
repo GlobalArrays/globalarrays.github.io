@@ -1,0 +1,150 @@
+---
+layout: default
+---
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+    <head>
+        <title>Global Arrays Toolkit: PETSc</title>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+        <meta  name="description" content="Inter-operability of Global Arrays
+        with PETSc." />
+        <meta name="keywords" content="PNNL, Global Arrays, EMSL" />
+        
+    </head>
+    <body>
+        <div id="page">
+            {% include shared/header.inc %}
+            
+            <div id="container">
+                <div id="main">
+
+<h1>Inter-operability of Global Arrays with PETSc</h1>
+
+<p><a href="http://www-fp.mcs.anl.gov/petsc" title="Offsite">PETSc (the
+    Portable, Extensible Toolkit for Scientific Computation)</a> is developed
+by the <a href="http://www.anl.gov/" title="Offsite">Argonne National
+    Laboratory</a>. It is part of the <a
+    href="http://acts.nersc.gov/tools.html" title="Offsite">ACTS Toolkit</a> in
+the DOE 2000 Initiative. PETSc is a suite of data structures and routines for
+the scalable (parallel) solution of scientific applications modeled by partial
+differential equations. It employs the MPI standard for all message-passing
+communication, and is written in a data-structure-neutral manner to enable easy
+reuse and flexibility.</p>
+
+<p>The following summarizes the inter-operability status of Global Arrays and
+PETSc:</p>
+
+<h2>Inter-operability</h2>
+
+<p>Global Arrays is inter-operable with PETSc. In an application using Global
+Arrays, the PETSc solvers can be called to solve PDEs that require solving
+large-scale, sparse nonlinear systems of equations. The only issue related to
+inter-operablity is how to convert the data structures of Global Arrays to
+those of PETSc before calling the PETSc solvers, and how to convert the data
+structures of PETSc back to Global Arrays after calling the PETSc solvers.
+Fortunately, PETSc provides enough mechanisms for this purpose. For vector
+operations, there are <code>VecCreateMPI()</code>, <code>VecSetValues()</code>,
+<code>VecGetArray()</code>, <code>VecRestoreArray()</code>, etc. The same
+functions exist for matrix operation.</p>
+
+<p>The packages used in the testing are:</p>
+
+<ul>
+    <li>Global Arrays Version 3.0</li>
+    <li>PETSc Version 2.0.24</li>
+</ul>
+
+<h2>Instructions for using PETSc in a Global Arrays application</h2>
+
+<p><a href="http://www.mcs.anl.gov/petsc/petsc-as/documentation/index.html"
+    title="Offsite">PETSc online documentation</a> is a well-maintained site
+for PETSc resources. Examples can be accessed both online or from the package
+itself.</p>
+
+<p>A typical scenario to use PETSc in a Global Arrays application is that there
+is a global array x that represents the approximate solution initialized with
+some initial values. It needs to call one of the PETSc solvers to solve the
+problem, and restore the results back to x.</p>
+
+<p>Here are the instructions for implementing an example Ax = b, where A is the
+matrix defining the linear system, b is the right-hand side, and x is the
+approximate solution and an global array.</p>
+
+<ol>
+    <li>Initialize PETSc (PetscInitialize())</li>
+    <li>Convert the global array x to the PETSc format
+
+    <ul>
+        <li>Create a PETSc Vector pets_x (VecCreateMPI())</li>
+        <li>Get the range of pets_x which resides in the local process(or)
+        (VecGetOwnershipRange())</li>
+        <li>Get access to the local portion of pets_x (VecGetArray())</li>
+        <li>Get the corresponding data block (the range of pets_x in local
+        process(or)) in the global array x (ga_get())</li>
+        <li>Put the data block to pets_x (VecRestoreArray())</li>
+        <li>Create the linear solver and set various options</li>
+        <li>Solve the linear system</li>
+        <li>Write the solution back to Global Array
+        <ul>
+            <li>Get access to the local portion of pets_x (VecGetArray())</li>
+            <li>Put the local portion of solution back to global array x
+            (ga_put())</li>
+            <li>Close the access to the local portion of pets_x
+            (VecRestoreArray())</li>
+        </ul>
+        </li>
+    </ul>
+    </li>
+</ol>
+
+<p>There are detailed instructions for setting up environment variables on
+different platforms with the PETSc package. Users on Cray T3E at NERSC only
+need to the load the petsc module: insert</p>
+
+<p><code>module load petsc</code></p>
+<p>into the <code>.login</code> file.</p>
+
+<h2>Discussion</h2>
+
+<p>Data conversion between the Global Arrays and PETSc is the key issue for
+inter-operability. PETSc provides several ways to create Vectors and Matrices
+and to set values to them. We found that the most efficient way to connect the
+Global Arrays and PETSc is to use the GetArray and RestoreArray mechanism.
+GetArray and RestoreArray are not intended to set values though, they open a
+window to access and update the local Vector/Matrix of PETSc. Global Arrays
+provide the one-sided operations, get and put, which are a perfect match for
+PETSc's GetArray and RestoreArray mechanism. The array segment of Global Arrays
+can be sent to or received from PETSc in block fashion, instead of updating
+element by element.</p>
+
+<p>Here is how it works:</p>
+
+<ul>
+    <li>From Global Arrays to PETSc
+    <ol>
+        <li>Access the local portion of PETSc Vector/Matrix.</li>
+        <li>Use ga_get() to get the corresponding section of Global Array.</li>
+        <li>Close the access to (also update) the local portion of PETSc
+        Vector/Matrix.</li>
+    </ol>
+    </li>
+    <li style="padding-top: 15px;">From PETSc to Global Arrays
+    <ol>
+        <li>Access the local portion of PETSc Vector/Matrix.</li>
+        <li>Use ga_put() to put the PETSc data in the corresponding section of
+        Global Array.</li>
+        <li>Close the access to the local portion of PETSc Vector/Matrix.</li>
+    </ol>
+    </li>
+</ul>
+
+                </div>
+            </div>
+
+
+            
+        </div>
+    </body>
+</html>

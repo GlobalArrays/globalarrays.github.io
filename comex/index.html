@@ -1,0 +1,71 @@
+---
+layout: default
+---
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+    <head>
+        <title>PNNL: High-Performance Computing</title>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <meta name="description" content="" />
+        <meta name="keywords" content="PNNL, HPC, High Performance Computing" />
+        
+        <style>
+            .center
+            {
+                margin:auto;
+                width:70%;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="page">
+            {% include shared/header.inc %}
+            
+            <div id="container">
+                <div id="main">
+
+<h1>ComEx: Communications Runtime for Extreme Scale</h1>
+
+<p>
+The Communication runtime for Extreme Scale (ComEx) is a successor of the Aggregate
+Remote Memory Copy Interface (ARMCI).  ComEx uses native interfaces for
+facilitating one-sided communication primitives in Global Arrays. As an
+example, ComEx has been designed to use Openfabrics Verbs (OFA) for InfiniBand
+and RoCE Interconnects, Distributed Memory Applications (DMAPP) for Cray Gemini
+Interconnect, and PAMI for x86, PERCS, and Blue Gene/Q Interconnects. The
+specification is being extended to support multi-threading, group aware
+communication, non-cache-coherent architectures and generic active messages.
+ComEx provides abstractions for RMA operations such as get, put and atomic
+memory operations and provides location consistency.
+</p>
+
+<p>
+The latest version of ComEx is bundled with the Global Arrays software as of GA
+5.4b. Please see the <a
+    href="https://github.com/GlobalArrays/ga/releases">GA download page</a> to download
+    ComEx as part of GA releases.
+</p>
+
+<h1>Acknolwedging ComEx</h1>
+We request you to include the following reference in your paper, if you are using Global Arrays 5.3 or above.
+
+<p>Jeff Daily, Abhinav Vishnu, Bruce Palmer, Hubertus van Dam, and Darren Kerbyson.
+On the use of MPI as a PGAS Runtime. International Conference on High Performance Computing (HiPC) 2014. <a
+		href="/papers/comex_hipc14.pdf"> (pdf)</a>,  <a
+		        href="/papers/comex_hipc14.bib"> (bib)</a>.
+
+</p>
+
+            {% include_relative shared/ack.inc %}
+            <br><br>
+            
+                </div>
+            </div>
+
+            <div id="rightCol">
+                {% include_relative shared/leftnav.inc %}
+            </div>
+            
+        </div>
+    </body>
+</html>

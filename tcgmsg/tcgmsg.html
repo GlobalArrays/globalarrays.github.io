@@ -1,0 +1,56 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+
+<!-- DO NOT EDIT:  this is a cleared public file -->
+
+<HEAD>
+   <TITLE>TCGMSG</TITLE>
+</HEAD>
+<BODY TEXT="#000000" BGCOLOR="#F0FFF0" LINK="#0000EE" VLINK="#551A8B" ALINK="#FF0000">
+
+<H1 ALIGN=CENTER><I><FONT COLOR="#000080">TCGMSG Message Passing Library</FONT></I></H1>
+
+<P>TCGMSG is a toolkit for writing portable parallel programs using a message
+passing model. Supported are a variety of common UNIX workstations, mini-super
+and super computers and heterogenous networks of the same, along with true
+parallel computers such as the Cray T3D/E, IBM SP, Intel Paragon, the Kendall
+Square Research KSR-2, and several others. Applications port between all
+of these environments without modification to the parallel constructs.
+</P>
+
+<P><I><FONT COLOR="#000080"><FONT SIZE=+1>Model</FONT></FONT></I></P>
+
+<P>Strong typing is enforced. The type associated with a message when sent
+must match the type specified on the corresponding receive. No wildcard
+types are permitted.</P>
+
+<P>Processes are connected with ordered, synchronous channels. On machines
+that explicitly support it explicitly asynchronous communication is supported.
+Otherwise it should be thought that:</P>
+
+<UL>
+<LI>sends block until the message is explicitly received</LI>
+
+<LI>messages from a particular process can only be received in the order
+sent.</LI>
+</UL>
+
+<P>As far as buffering provided by the transport layer permits, messages
+are actually sent without any synchronization between the sender and receiver.
+However, since the amount of buffering varies greatly from one mechanism
+to another you should not explicitly use this fact. </P>
+
+<P><I><FONT COLOR="#000080"><FONT SIZE=+1>Programming Interface</FONT></FONT></I></P>
+
+<P><FONT COLOR="#000000">The documentation is provided with the package
+and is also available in <A HREF="TCGapi.html">on-line</A>.</FONT></P>
+
+<P><I><FONT COLOR="#000080"><FONT SIZE=+1>Distribution</FONT></FONT></I></P>
+
+<P>The latest copy of the library is <A HREF="http://www.emsl.pnl.gov/distribution.html">distributed
+with the Global Arrays package</A> without
+charge, along with a set of example applications. In addition,
+a port of TCGMSG on top of MPI is distributed.</P>
+
+</BODY>
+</HTML>

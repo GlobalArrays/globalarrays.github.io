@@ -1,0 +1,82 @@
+---
+layout: default
+title: Home
+---
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+    <head>
+        <title>PNNL: Global Arrays Toolkit</title>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <meta name="description" content="The Global Arrays (GA) toolkit
+        provides an efficient and portable &quot;shared-memory&quot;
+        programming interface for distributed-memory computers." />
+        <meta name="keywords" content="PNNL, Global Arrays, EMSL" />
+
+        
+    </head>
+    <body>
+
+
+        <div id="page">
+            {% include shared/header.inc %}
+            
+            <div id="container">
+                <div id="main">
+
+<h1>Global Arrays Programming Model</h1>
+
+
+<p>
+Global Arrays (GA) is a Partitioned Global Address Space (PGAS) programming
+model. It provides primitives for one-sided communication (Get, Put,
+Accumulate) and Atomic Operations (read increment). It supports blocking and
+non-blocking primtives, and supports location consistency.  
+</p>
+
+<p>
+Starting with GA v5.4, ARMCI has been deprecated and replaced with
+Communication runtime for Extreme Scale (ComEx).  GA uses ComEx to
+abstract inter-node communication operations. The default ComEx ports
+use MPI --- which makes GA and ComEx portable for high-end systems. Most
+ComEx implementations use on-node shared memory for faster intra-node
+communication.
+</p>
+
+
+<h2>Latest Release</h2>
+
+<p>
+- <a href="https://github.com/GlobalArrays/ga/blob/master/CHANGELOG.md">Release Notes</a>
+- <a href="https://github.com/GlobalArrays/ga/releases">Download</a>
+</p>
+
+<h2>Citing GA</h2>
+<p>Please refer to <a href="/papers/index.html#citing">this
+    section of our publications page.</a></p>
+
+                </div>
+            </div>
+            <div id="rightCol">
+                <h2 class="first">Links</h2>
+<ul>
+
+    <li><a href="https://github.com/GlobalArrays/ga" target="_blank">GitHub</a></li>	
+    <li><a href="/userinterface.html" id="userinterface">API Reference</a></li>	
+    <li><a href="/documentation.html" id="documentation">Documentation</a></li>
+    <li><a href="/papers/index.html" id="papers">Papers</a></li>
+
+    <li><a href="/components.html" id="components">Libraries within GA</a></li>	
+    <li><a href="/applications.html" id="applications">Applications Using GA</a></li>
+    <li><a href="/performance.html" id="performance">Performance</a></li>
+    <li><a href="/staff.html">Global Arrays Team</a></li>
+
+</ul>
+                <h2>Feedback</h2> 
+<ul>
+<li><a href="https://github.com/GlobalArrays/ga/issues" class="feedback">Github Issue</a></li>
+</ul>
+
+            </div>
+        </div>
+    </body>
+</html>

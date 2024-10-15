@@ -1,0 +1,217 @@
+
+---
+layout: default
+---
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+    <head>
+        <title>PNNL: Global Arrays Toolkit %s API</title>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+        <meta  name="description" content="The Global Arrays (GA) toolkit
+        provides an efficient and portable &quot;shared-memory&quot;
+        programming interface for distributed-memory computers." />
+        <meta name="keywords" content="PNNL, Global Arrays, EMSL" />
+        <!--#include virtual="/docs/globalshared/globals.inc"-->
+        <style type="text/css">
+        dt {
+        font-size:small;
+        }
+        </style>
+    </head>
+    <body>
+    <dl>
+<dt><a target="api" href="f_op_api.html#ABS_VALUE">ABS VALUE</a></dt>
+<dt><a target="api" href="f_op_api.html#ABS_VALUE_PATCH">ABS VALUE PATCH</a></dt>
+<dt><a target="api" href="f_op_api.html#ACC">ACC</a></dt>
+<dt><a target="api" href="f_op_api.html#ACCESS">ACCESS</a></dt>
+<dt><a target="api" href="f_op_api.html#ACCESS_BLOCK">ACCESS BLOCK</a></dt>
+<dt><a target="api" href="f_op_api.html#ACCESS_BLOCK_GRID">ACCESS BLOCK GRID</a></dt>
+<dt><a target="api" href="f_op_api.html#ACCESS_BLOCK_SEGMENT">ACCESS BLOCK SEGMENT</a></dt>
+<dt><a target="api" href="f_op_api.html#ACCESS_GHOST_ELEMENT">ACCESS GHOST ELEMENT</a></dt>
+<dt><a target="api" href="f_op_api.html#ACCESS_GHOSTS">ACCESS GHOSTS</a></dt>
+<dt><a target="api" href="f_op_api.html#ADD">ADD</a></dt>
+<dt><a target="api" href="f_op_api.html#ADD_CONSTANT">ADD CONSTANT</a></dt>
+<dt><a target="api" href="f_op_api.html#ADD_CONSTANT_PATCH">ADD CONSTANT PATCH</a></dt>
+<dt><a target="api" href="f_op_api.html#ADD_DIAGONAL">ADD DIAGONAL</a></dt>
+<dt><a target="api" href="f_op_api.html#ADD_PATCH">ADD PATCH</a></dt>
+<dt><a target="api" href="f_op_api.html#ALLOC_GATSCAT_BUF">ALLOC GATSCAT BUF</a></dt>
+<dt><a target="api" href="f_op_api.html#ALLOCATE">ALLOCATE</a></dt>
+<dt><a target="api" href="f_op_api.html#BRDCST">BRDCST</a></dt>
+<dt><a target="api" href="f_op_api.html#CHECK_HANDLE">CHECK HANDLE</a></dt>
+<dt><a target="api" href="f_op_api.html#CLUSTER_NNODES">CLUSTER NNODES</a></dt>
+<dt><a target="api" href="f_op_api.html#CLUSTER_NODEID">CLUSTER NODEID</a></dt>
+<dt><a target="api" href="f_op_api.html#CLUSTER_NPROCS">CLUSTER NPROCS</a></dt>
+<dt><a target="api" href="f_op_api.html#CLUSTER_PROC_NODEID">CLUSTER PROC NODEID</a></dt>
+<dt><a target="api" href="f_op_api.html#CLUSTER_PROCID">CLUSTER PROCID</a></dt>
+<dt><a target="api" href="f_op_api.html#COMPARE_DISTR">COMPARE DISTR</a></dt>
+<dt><a target="api" href="f_op_api.html#COPY">COPY</a></dt>
+<dt><a target="api" href="f_op_api.html#COPY_PATCH">COPY PATCH</a></dt>
+<dt><a target="api" href="f_op_api.html#CREATE">CREATE</a></dt>
+<dt><a target="api" href="f_op_api.html#CREATE_CONFIG">CREATE CONFIG</a></dt>
+<dt><a target="api" href="f_op_api.html#CREATE_GHOSTS">CREATE GHOSTS</a></dt>
+<dt><a target="api" href="f_op_api.html#CREATE_GHOSTS_CONFIG">CREATE GHOSTS CONFIG</a></dt>
+<dt><a target="api" href="f_op_api.html#CREATE_GHOSTS_IRREG">CREATE GHOSTS IRREG</a></dt>
+<dt><a target="api" href="f_op_api.html#CREATE_GHOSTS_IRREG_CONFIG">CREATE GHOSTS IRREG CONFIG</a></dt>
+<dt><a target="api" href="f_op_api.html#CREATE_HANDLE">CREATE HANDLE</a></dt>
+<dt><a target="api" href="f_op_api.html#CREATE_IRREG">CREATE IRREG</a></dt>
+<dt><a target="api" href="f_op_api.html#CREATE_IRREG_CONFIG">CREATE IRREG CONFIG</a></dt>
+<dt><a target="api" href="f_op_api.html#CREATE_MUTEXES">CREATE MUTEXES</a></dt>
+<dt><a target="api" href="f_op_api.html#DESTROY">DESTROY</a></dt>
+<dt><a target="api" href="f_op_api.html#DESTROY_MUTEXES">DESTROY MUTEXES</a></dt>
+<dt><a target="api" href="f_op_api.html#DIAG">DIAG</a></dt>
+<dt><a target="api" href="f_op_api.html#DIAG_REUSE">DIAG REUSE</a></dt>
+<dt><a target="api" href="f_op_api.html#DIAG_STD">DIAG STD</a></dt>
+<dt><a target="api" href="f_op_api.html#DISTRIBUTION">DISTRIBUTION</a></dt>
+<dt><a target="api" href="f_op_api.html#DOT">DOT</a></dt>
+<dt><a target="api" href="f_op_api.html#DOT_PATCH">DOT PATCH</a></dt>
+<dt><a target="api" href="f_op_api.html#DUPLICATE">DUPLICATE</a></dt>
+<dt><a target="api" href="f_op_api.html#ELEM_DIVIDE">ELEM DIVIDE</a></dt>
+<dt><a target="api" href="f_op_api.html#ELEM_DIVIDE_PATCH">ELEM DIVIDE PATCH</a></dt>
+<dt><a target="api" href="f_op_api.html#ELEM_MAXIMUM">ELEM MAXIMUM</a></dt>
+<dt><a target="api" href="f_op_api.html#ELEM_MAXIMUM_PATCH">ELEM MAXIMUM PATCH</a></dt>
+<dt><a target="api" href="f_op_api.html#ELEM_MINIMUM">ELEM MINIMUM</a></dt>
+<dt><a target="api" href="f_op_api.html#ELEM_MINIMUM_PATCH">ELEM MINIMUM PATCH</a></dt>
+<dt><a target="api" href="f_op_api.html#ELEM_MULTIPLY">ELEM MULTIPLY</a></dt>
+<dt><a target="api" href="f_op_api.html#ELEM_MULTIPLY_PATCH">ELEM MULTIPLY PATCH</a></dt>
+<dt><a target="api" href="f_op_api.html#ERROR">ERROR</a></dt>
+<dt><a target="api" href="f_op_api.html#FENCE">FENCE</a></dt>
+<dt><a target="api" href="f_op_api.html#FILL">FILL</a></dt>
+<dt><a target="api" href="f_op_api.html#FILL_PATCH">FILL PATCH</a></dt>
+<dt><a target="api" href="f_op_api.html#FREE_GATSCAT_BUF">FREE GATSCAT BUF</a></dt>
+<dt><a target="api" href="f_op_api.html#GATHER">GATHER</a></dt>
+<dt><a target="api" href="f_op_api.html#GEMM">GEMM</a></dt>
+<dt><a target="api" href="f_op_api.html#GET">GET</a></dt>
+<dt><a target="api" href="f_op_api.html#GET_BLOCK_INFO">GET BLOCK INFO</a></dt>
+<dt><a target="api" href="f_op_api.html#GET_DEBUG">GET DEBUG</a></dt>
+<dt><a target="api" href="f_op_api.html#GET_DIAG">GET DIAG</a></dt>
+<dt><a target="api" href="f_op_api.html#GET_GHOST_BLOCK">GET GHOST BLOCK</a></dt>
+<dt><a target="api" href="f_op_api.html#GOP">GOP</a></dt>
+<dt><a target="api" href="f_op_api.html#HAS_GHOSTS">HAS GHOSTS</a></dt>
+<dt><a target="api" href="f_op_api.html#INIT_FENCE">INIT FENCE</a></dt>
+<dt><a target="api" href="f_op_api.html#INITIALIZE">INITIALIZE</a></dt>
+<dt><a target="api" href="f_op_api.html#INITIALIZE_LTD">INITIALIZE LTD</a></dt>
+<dt><a target="api" href="f_op_api.html#INQUIRE">INQUIRE</a></dt>
+<dt><a target="api" href="f_op_api.html#INQUIRE_MEMORY">INQUIRE MEMORY</a></dt>
+<dt><a target="api" href="f_op_api.html#INQUIRE_NAME">INQUIRE NAME</a></dt>
+<dt><a target="api" href="f_op_api.html#IS_MIRRORED">IS MIRRORED</a></dt>
+<dt><a target="api" href="f_op_api.html#LLT_SOLVE">LLT SOLVE</a></dt>
+<dt><a target="api" href="f_op_api.html#LOCATE">LOCATE</a></dt>
+<dt><a target="api" href="f_op_api.html#LOCATE_REGION">LOCATE REGION</a></dt>
+<dt><a target="api" href="f_op_api.html#LOCK">LOCK</a></dt>
+<dt><a target="api" href="f_op_api.html#LU_SOLVE">LU SOLVE</a></dt>
+<dt><a target="api" href="f_op_api.html#MASK_SYNC">MASK SYNC</a></dt>
+<dt><a target="api" href="f_op_api.html#MATMUL_PATCH">MATMUL PATCH</a></dt>
+<dt><a target="api" href="f_op_api.html#MEDIAN">MEDIAN</a></dt>
+<dt><a target="api" href="f_op_api.html#MEDIAN_PATCH">MEDIAN PATCH</a></dt>
+<dt><a target="api" href="f_op_api.html#MEMORY_AVAIL">MEMORY AVAIL</a></dt>
+<dt><a target="api" href="f_op_api.html#MEMORY_LIMITED">MEMORY LIMITED</a></dt>
+<dt><a target="api" href="f_op_api.html#MERGE_DISTR_PATCH">MERGE DISTR PATCH</a></dt>
+<dt><a target="api" href="f_op_api.html#MERGE_MIRRORED">MERGE MIRRORED</a></dt>
+<dt><a target="api" href="f_op_api.html#NBACC">NBACC</a></dt>
+<dt><a target="api" href="f_op_api.html#NBGET">NBGET</a></dt>
+<dt><a target="api" href="f_op_api.html#NBLOCK">NBLOCK</a></dt>
+<dt><a target="api" href="f_op_api.html#NBPUT">NBPUT</a></dt>
+<dt><a target="api" href="f_op_api.html#NBTEST">NBTEST</a></dt>
+<dt><a target="api" href="f_op_api.html#NBWAIT">NBWAIT</a></dt>
+<dt><a target="api" href="f_op_api.html#NDIM">NDIM</a></dt>
+<dt><a target="api" href="f_op_api.html#NNODES">NNODES</a></dt>
+<dt><a target="api" href="f_op_api.html#NODEID">NODEID</a></dt>
+<dt><a target="api" href="f_op_api.html#NORM_INFINITY">NORM INFINITY</a></dt>
+<dt><a target="api" href="f_op_api.html#NORM1">NORM1</a></dt>
+<dt><a target="api" href="f_op_api.html#OVERLAY">OVERLAY</a></dt>
+<dt><a target="api" href="f_op_api.html#PACK">PACK</a></dt>
+<dt><a target="api" href="f_op_api.html#PATCH_ENUM">PATCH ENUM</a></dt>
+<dt><a target="api" href="f_op_api.html#PERIODIC_ACC">PERIODIC ACC</a></dt>
+<dt><a target="api" href="f_op_api.html#PERIODIC_GET">PERIODIC GET</a></dt>
+<dt><a target="api" href="f_op_api.html#PERIODIC_PUT">PERIODIC PUT</a></dt>
+<dt><a target="api" href="f_op_api.html#PGROUP_BRDCST">PGROUP BRDCST</a></dt>
+<dt><a target="api" href="f_op_api.html#PGROUP_CREATE">PGROUP CREATE</a></dt>
+<dt><a target="api" href="f_op_api.html#PGROUP_DESTROY">PGROUP DESTROY</a></dt>
+<dt><a target="api" href="f_op_api.html#PGROUP_DUPLICATE">PGROUP DUPLICATE</a></dt>
+<dt><a target="api" href="f_op_api.html#PGROUP_GET_DEFAULT">PGROUP GET DEFAULT</a></dt>
+<dt><a target="api" href="f_op_api.html#PGROUP_GET_MIRROR">PGROUP GET MIRROR</a></dt>
+<dt><a target="api" href="f_op_api.html#PGROUP_GET_WORLD">PGROUP GET WORLD</a></dt>
+<dt><a target="api" href="f_op_api.html#PGROUP_GOP">PGROUP GOP</a></dt>
+<dt><a target="api" href="f_op_api.html#PGROUP_NNODES">PGROUP NNODES</a></dt>
+<dt><a target="api" href="f_op_api.html#PGROUP_NODEID">PGROUP NODEID</a></dt>
+<dt><a target="api" href="f_op_api.html#PGROUP_SELF">PGROUP SELF</a></dt>
+<dt><a target="api" href="f_op_api.html#PGROUP_SET_DEFAULT">PGROUP SET DEFAULT</a></dt>
+<dt><a target="api" href="f_op_api.html#PGROUP_SYNC">PGROUP SYNC</a></dt>
+<dt><a target="api" href="f_op_api.html#PRINT">PRINT</a></dt>
+<dt><a target="api" href="f_op_api.html#PRINT_DISTRIBUTION">PRINT DISTRIBUTION</a></dt>
+<dt><a target="api" href="f_op_api.html#PRINT_FILE">PRINT FILE</a></dt>
+<dt><a target="api" href="f_op_api.html#PRINT_PATCH">PRINT PATCH</a></dt>
+<dt><a target="api" href="f_op_api.html#PRINT_STATS">PRINT STATS</a></dt>
+<dt><a target="api" href="f_op_api.html#PROC_TOPOLOGY">PROC TOPOLOGY</a></dt>
+<dt><a target="api" href="f_op_api.html#PUT">PUT</a></dt>
+<dt><a target="api" href="f_op_api.html#READ_INC">READ INC</a></dt>
+<dt><a target="api" href="f_op_api.html#RECIP">RECIP</a></dt>
+<dt><a target="api" href="f_op_api.html#RECIP_PATCH">RECIP PATCH</a></dt>
+<dt><a target="api" href="f_op_api.html#RELEASE">RELEASE</a></dt>
+<dt><a target="api" href="f_op_api.html#RELEASE_BLOCK">RELEASE BLOCK</a></dt>
+<dt><a target="api" href="f_op_api.html#RELEASE_BLOCK_GRID">RELEASE BLOCK GRID</a></dt>
+<dt><a target="api" href="f_op_api.html#RELEASE_BLOCK_SEGMENT">RELEASE BLOCK SEGMENT</a></dt>
+<dt><a target="api" href="f_op_api.html#RELEASE_GHOST_ELEMENT">RELEASE GHOST ELEMENT</a></dt>
+<dt><a target="api" href="f_op_api.html#RELEASE_GHOSTS">RELEASE GHOSTS</a></dt>
+<dt><a target="api" href="f_op_api.html#RELEASE_UPDATE">RELEASE UPDATE</a></dt>
+<dt><a target="api" href="f_op_api.html#RELEASE_UPDATE_BLOCK">RELEASE UPDATE BLOCK</a></dt>
+<dt><a target="api" href="f_op_api.html#RELEASE_UPDATE_BLOCK_GRID">RELEASE UPDATE BLOCK GRID</a></dt>
+<dt><a target="api" href="f_op_api.html#RELEASE_UPDATE_BLOCK_SEGMENT">RELEASE UPDATE BLOCK SEGMENT</a></dt>
+<dt><a target="api" href="f_op_api.html#RELEASE_UPDATE_GHOST_ELEMENT">RELEASE UPDATE GHOST ELEMENT</a></dt>
+<dt><a target="api" href="f_op_api.html#RELEASE_UPDATE_GHOSTS">RELEASE UPDATE GHOSTS</a></dt>
+<dt><a target="api" href="f_op_api.html#SCALE">SCALE</a></dt>
+<dt><a target="api" href="f_op_api.html#SCALE_COLS">SCALE COLS</a></dt>
+<dt><a target="api" href="f_op_api.html#SCALE_PATCH">SCALE PATCH</a></dt>
+<dt><a target="api" href="f_op_api.html#SCALE_ROWS">SCALE ROWS</a></dt>
+<dt><a target="api" href="f_op_api.html#SCAN_ADD">SCAN ADD</a></dt>
+<dt><a target="api" href="f_op_api.html#SCAN_COPY">SCAN COPY</a></dt>
+<dt><a target="api" href="f_op_api.html#SCATTER">SCATTER</a></dt>
+<dt><a target="api" href="f_op_api.html#SCATTER_ACC">SCATTER ACC</a></dt>
+<dt><a target="api" href="f_op_api.html#SELECT_ELEM">SELECT ELEM</a></dt>
+<dt><a target="api" href="f_op_api.html#SET_ARRAY_NAME">SET ARRAY NAME</a></dt>
+<dt><a target="api" href="f_op_api.html#SET_BLOCK_CYCLIC">SET BLOCK CYCLIC</a></dt>
+<dt><a target="api" href="f_op_api.html#SET_BLOCK_CYCLIC_PROC_GRID">SET BLOCK CYCLIC PROC GRID</a></dt>
+<dt><a target="api" href="f_op_api.html#SET_CHUNK">SET CHUNK</a></dt>
+<dt><a target="api" href="f_op_api.html#SET_DATA">SET DATA</a></dt>
+<dt><a target="api" href="f_op_api.html#SET_DEBUG">SET DEBUG</a></dt>
+<dt><a target="api" href="f_op_api.html#SET_DIAGONAL">SET DIAGONAL</a></dt>
+<dt><a target="api" href="f_op_api.html#SET_GHOSTS">SET GHOSTS</a></dt>
+<dt><a target="api" href="f_op_api.html#SET_IRREG_DISTR">SET IRREG DISTR</a></dt>
+<dt><a target="api" href="f_op_api.html#SET_MEMORY_DEV">SET MEMORY DEV</a></dt>
+<dt><a target="api" href="f_op_api.html#SET_MEMORY_LIMIT">SET MEMORY LIMIT</a></dt>
+<dt><a target="api" href="f_op_api.html#SET_PGROUP">SET PGROUP</a></dt>
+<dt><a target="api" href="f_op_api.html#SET_PROPERTY">SET PROPERTY</a></dt>
+<dt><a target="api" href="f_op_api.html#SET_RESTRICTED">SET RESTRICTED</a></dt>
+<dt><a target="api" href="f_op_api.html#SET_RESTRICTED_RANGE">SET RESTRICTED RANGE</a></dt>
+<dt><a target="api" href="f_op_api.html#SET_TILED_IRREG_PROC_GRID">SET TILED IRREG PROC GRID</a></dt>
+<dt><a target="api" href="f_op_api.html#SET_TILED_PROC_GRID">SET TILED PROC GRID</a></dt>
+<dt><a target="api" href="f_op_api.html#SHIFT_DIAGONAL">SHIFT DIAGONAL</a></dt>
+<dt><a target="api" href="f_op_api.html#SOLVE">SOLVE</a></dt>
+<dt><a target="api" href="f_op_api.html#SPD_INVERT">SPD INVERT</a></dt>
+<dt><a target="api" href="f_op_api.html#STEP_MAX">STEP MAX</a></dt>
+<dt><a target="api" href="f_op_api.html#STEP_MAX_PATCH">STEP MAX PATCH</a></dt>
+<dt><a target="api" href="f_op_api.html#STRIDED_ACC">STRIDED ACC</a></dt>
+<dt><a target="api" href="f_op_api.html#STRIDED_GET">STRIDED GET</a></dt>
+<dt><a target="api" href="f_op_api.html#STRIDED_PUT">STRIDED PUT</a></dt>
+<dt><a target="api" href="f_op_api.html#SUMMARIZE">SUMMARIZE</a></dt>
+<dt><a target="api" href="f_op_api.html#SYMMETRIZE">SYMMETRIZE</a></dt>
+<dt><a target="api" href="f_op_api.html#SYNC">SYNC</a></dt>
+<dt><a target="api" href="f_op_api.html#TERMINATE">TERMINATE</a></dt>
+<dt><a target="api" href="f_op_api.html#TOTAL_BLOCKS">TOTAL BLOCKS</a></dt>
+<dt><a target="api" href="f_op_api.html#TRANSPOSE">TRANSPOSE</a></dt>
+<dt><a target="api" href="f_op_api.html#UNLOCK">UNLOCK</a></dt>
+<dt><a target="api" href="f_op_api.html#UNPACK">UNPACK</a></dt>
+<dt><a target="api" href="f_op_api.html#UNSET_PROPERTY">UNSET PROPERTY</a></dt>
+<dt><a target="api" href="f_op_api.html#UPDATE_GHOST_DIR">UPDATE GHOST DIR</a></dt>
+<dt><a target="api" href="f_op_api.html#UPDATE_GHOSTS">UPDATE GHOSTS</a></dt>
+<dt><a target="api" href="f_op_api.html#USES_MA">USES MA</a></dt>
+<dt><a target="api" href="f_op_api.html#WTIME">WTIME</a></dt>
+<dt><a target="api" href="f_op_api.html#ZERO">ZERO</a></dt>
+<dt><a target="api" href="f_op_api.html#ZERO_DIAGONAL">ZERO DIAGONAL</a></dt>
+<dt><a target="api" href="f_op_api.html#ZERO_PATCH">ZERO PATCH</a></dt>
+
+    </dl>
+    </body>
+</html>

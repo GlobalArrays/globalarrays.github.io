@@ -1,0 +1,66 @@
+---
+layout: default
+---
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+    <head>
+        <title>PNNL: TCGMSG</title>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <meta name="keywords" content="PNNL, Global Arrays, EMSL" />
+        
+    </head>
+    <body>
+        <div id="page">
+            {% include shared/header.inc %}
+            
+            <div id="container">
+                <div id="main">
+
+<h1>TCGMSG Message Passing Library</h1>
+
+<p>TCGMSG is a toolkit for writing portable parallel programs using a message
+passing model. Supported are a variety of common UNIX workstations, mini-super
+and super computers and heterogenous networks of the same, along with true
+parallel computers such as the Cray T3D/E, IBM SP, Intel Paragon, the Kendall
+Square Research KSR-2, and several others. Applications port between all of
+these environments without modification to the parallel constructs.</p>
+
+<h2>Model</h2>
+
+<p>Strong typing is enforced. The type associated with a message when sent must
+match the type specified on the corresponding receive. No wildcard types are
+permitted.</p>
+
+<p>Processes are connected with ordered, synchronous channels. On machines that
+explicitly support it explicitly asynchronous communication is supported.
+Otherwise it should be thought that:</p>
+
+<ul>
+    <li>sends block until the message is explicitly received</li>
+    <li>messages from a particular process can only be received in the order
+    sent.</li>
+</ul>
+
+<p>As far as buffering provided by the transport layer permits, messages are
+actually sent without any synchronization between the sender and receiver.
+However, since the amount of buffering varies greatly from one mechanism to
+another you should not explicitly use this fact.</p>
+
+<h2>Programming Interface</h2>
+
+<p>The documentation is provided with the package and is also available
+<a href="TCGapi.html">here</a>.</p>
+
+                </div>
+            </div>
+
+            <div id="rightCol">
+                
+                
+                {% include shared/rightnav_tcgmsg.inc %}
+                
+            </div>
+            
+        </div>
+    </body>
+</html>

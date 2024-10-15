@@ -1,0 +1,73 @@
+---
+layout: default
+---
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+    <head>
+        <title>PNNL: High-Performance Computing</title>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <meta name="description" content="" />
+        <meta name="keywords" content="PNNL, HPC, High Performance Computing" />
+        
+        <style>
+            .center
+            {
+                margin:auto;
+                width:70%;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="page">
+            {% include shared/header.inc %}
+            
+            <div id="container">
+                <div id="main">
+
+<h1>ComEx Performance</h1>
+
+<p>The following figure shows the performance of the Blocking Get operation on
+the NERSC Edison system (--with-dmapp), which uses the Cray Aries Network.</p>
+
+<div class="center">
+    <img src="/comex/images/edison_get.png"/>
+</div>
+
+<p>The following figure shows the performance of the Blocking Get operation on
+the NERSC Hopper system (--with-dmapp), which uses the Cray Gemini Network.</p>
+
+<div class="center">
+    <img src="/comex/images/hopper_get.png"/>
+</div>
+
+<p> The following figure shows the performance of the Blocking Get operation
+using the OpenFabrics (--with-ofa) device on the PNNL Institutional Computing
+(PIC) system, which uses Mellanox InfiniBand QDR Network. </p>
+
+<div class="center">
+    <img src="/comex/images/pic_get.png"/>
+</div>
+
+<p> The following figure shows the performance of the Blocking Get operation
+using the MPI Two-sided compatibility port (--with-mpi-ts), which uses MPI
+send/recv communication primitives to implement the one-sided primitives of
+ComEx. This port is intended to for desktops, laptops, or any system which is
+not natively supported by ComEx.<p>
+
+<div class="center">
+    <img src="/comex/images/mpits_get.png"/>
+</div>
+
+{% include_relative shared/ack.inc %}
+<br><br>
+                </div>
+            </div>
+
+            <div id="rightCol">
+                {% include_relative shared/leftnav.inc %}
+                
+            </div>
+            
+        </div>
+    </body>
+</html>

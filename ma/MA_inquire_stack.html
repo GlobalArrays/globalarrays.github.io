@@ -1,0 +1,44 @@
+<BODY><PRE>
+
+
+     MA_INQUIRE_STACK
+
+
+     <B>NAME</B>
+	  MA_inquire_stack - find out how much free space is available
+	  in the stack region
+
+     <B>C SYNOPSIS</B>
+	  #include "macdecls.h"
+
+	  Integer MA_inquire_stack(datatype)
+	      Integer	  datatype;	  /* read-only */
+
+     <B>FORTRAN SYNOPSIS</B>
+	  #include "mafdecls.h"
+
+	  integer function MA_inquire_stack(datatype)
+	      integer	  datatype
+
+     <B>DESCRIPTION</B>
+	  MA_inquire_stack() returns the maximum number	of elements of
+	  type <I>datatype</I>	that can currently be allocated	in the stack,
+	  in a single allocation request, with respect to the
+	  partition defined at initialization.
+
+     <B>DIAGNOSTICS</B>
+	  MA not yet initialized
+	       MA_init() must be called	before this routine is called.
+	  invalid datatype: %d
+	       <I>datatype</I>	must be	one of those listed in macdecls.h or
+	       mafdecls.h.
+
+     <B>RETURN VALUE</B>
+	  C: The number	of elements, as	described above.
+	  FORTRAN: The number of elements, as described	above.
+
+     <B>SEE ALSO</B>
+	  MA(3), MA_inquire_avail(3), MA_inquire_heap(3)
+
+     <B>AUTHOR</B>
+	  Gregory S. Thomas, Pacific Northwest Laboratory

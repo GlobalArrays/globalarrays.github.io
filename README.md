@@ -1,1 +1,0 @@
-# globalarrays.github.io

@@ -1,0 +1,87 @@
+<BODY><PRE>
+
+
+     MA_GET_INDEX
+
+
+     <B>NAME</B>
+	  MA_get_index - get the base index for	a block
+
+     <B>C SYNOPSIS</B>
+	  #include "macdecls.h"
+
+	  Boolean MA_get_index(memhandle, index)
+	      Integer	  memhandle;	  /* read-only */
+	      Integer	  *index;	  /* write-only	*/
+
+     <B>FORTRAN SYNOPSIS</B>
+	  #include "mafdecls.h"
+
+	  logical function MA_get_index(memhandle, index)
+	      integer	  memhandle
+	      integer	  index
+
+     <B>DESCRIPTION</B>
+	  MA_get_index() returns in <I>index </I>the base index for the type-
+	  specific data	array that is appropriate for the block
+	  corresponding	to the handle <I>memhandle</I>	(which was returned by
+	  MA_allocate_heap() or	MA_push_stack()	when the block was
+	  allocated).
+
+     <B>USAGE</B>
+	  The following	FORTRAN	code illustrates the use of
+	  MA_get_index() by allocating a block of 5 integers on	the
+	  heap and then	storing	values into the	integers.
+
+	  #include "mafdecls.h"
+
+	      logical ok
+	      integer mhandle
+	      integer index
+	      integer i
+
+	      ok = MA_allocate_heap(MT_INT, 5, 'heap int block',
+	  mhandle)
+	      if (ok) then
+		  ok = MA_get_index(mhandle, index)
+		  if (ok) then
+		      do 10 i =	0, 4
+			  int_mb(index + i) = 0
+	  10	      continue
+		  endif
+	      endif
+
+     <B>DIAGNOSTICS</B>
+	  invalid memhandle: %d
+	       <I>memhandle </I>is not	a valid	handle.
+	  invalid checksum for memhandle %d (name: '%s')
+	       The block's computed checksum does not match its	stored
+	       checksum. This indicates	that the block has been
+	       corrupted by having its internal	state overwritten.
+	  invalid guard(s) for memhandle %d (name: '%s')
+	       This indicates that the block has been corrupted	by
+	       being overwritten at one	or both	ends. The likely cause
+	       of this is an application indexing bug.
+	  memhandle %d (name: '%s') not	in heap	or stack
+	       The block is not	currently allocated in the heap	or the
+	       stack.
+
+	  Other	diagnostics are	possible. If seen, they	indicate
+	  corruption of	the internal state of MA, caused by bugs in
+	  either MA or the application.
+
+     <B>RETURN VALUE</B>
+	  C: MA_TRUE upon success, MA_FALSE upon failure.
+	  FORTRAN: .true. upon success,	.false.	upon failure.
+
+     <B>NOTES</B>
+	  Type-specific	data arrays are	not yet	available in C,	so
+	  employ pointers instead of indices by	using MA_get_pointer()
+	  instead of MA_get_index().
+
+     <B>SEE ALSO</B>
+	  MA(3), MA_alloc_get(3), MA_allocate_heap(3),
+	  MA_get_pointer(3), MA_push_get(3), MA_push_stack(3)
+
+     <B>AUTHOR</B>
+	  Gregory S. Thomas, Pacific Northwest Laboratory

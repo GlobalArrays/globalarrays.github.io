@@ -1,0 +1,54 @@
+<BODY><PRE>
+
+
+     MA_FREE_HEAP
+
+
+     <B>NAME</B>
+	  MA_free_heap - deallocate a heap block
+
+     <B>C SYNOPSIS</B>
+	  #include "macdecls.h"
+
+	  Boolean MA_free_heap(memhandle)
+	      Integer	  memhandle;	  /* read-only */
+
+     <B>FORTRAN SYNOPSIS</B>
+	  #include "mafdecls.h"
+
+	  logical function MA_free_heap(memhandle)
+	      integer	  memhandle
+
+     <B>DESCRIPTION</B>
+	  MA_free_heap() deallocates the heap block corresponding to
+	  the handle <I>memhandle </I>(which was returned by MA_alloc_get()
+	  or MA_allocate_heap()	when the block was allocated).
+
+     <B>DIAGNOSTICS</B>
+	  invalid memhandle: %d
+	       <I>memhandle </I>is not	a valid	handle.
+	  invalid checksum for memhandle %d (name: '%s')
+	       The block's computed checksum does not match its	stored
+	       checksum. This indicates	that the block has been
+	       corrupted by having its internal	state overwritten.
+	  invalid guard(s) for memhandle %d (name: '%s')
+	       This indicates that the block has been corrupted	by
+	       being overwritten at one	or both	ends. The likely cause
+	       of this is an application indexing bug.
+	  memhandle %d (name: '%s') not	in heap
+	       The block is not	currently allocated in the heap.
+
+	  Other	diagnostics are	possible. If seen, they	indicate
+	  corruption of	the internal state of MA, caused by bugs in
+	  either MA or the application.
+
+     <B>RETURN VALUE</B>
+	  C: MA_TRUE upon success, MA_FALSE upon failure.
+	  FORTRAN: .true. upon success,	.false.	upon failure.
+
+     <B>SEE ALSO</B>
+	  MA(3), MA_alloc_get(3), MA_allocate_heap(3),
+	  MA_inquire_avail(3), MA_inquire_heap(3)
+
+     <B>AUTHOR</B>
+	  Gregory S. Thomas, Pacific Northwest Laboratory

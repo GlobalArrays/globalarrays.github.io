@@ -1,0 +1,60 @@
+<BODY><PRE>
+
+
+     MA_VERIFY_ALLOCATOR_STUFF
+
+
+     <B>NAME</B>
+	  MA_verify_allocator_stuff - sanity check the internal	state
+	  of MA
+
+     <B>C SYNOPSIS</B>
+	  #include "macdecls.h"
+
+	  Boolean MA_verify_allocator_stuff()
+
+     <B>FORTRAN SYNOPSIS</B>
+	  #include "mafdecls.h"
+
+	  logical function MA_verify_allocator_stuff()
+
+     <B>DESCRIPTION</B>
+	  MA_verify_allocator_stuff() checks each block	currently
+	  allocated on the heap	or the stack for checksum and guard
+	  errors. For each error found,	a message is printed on	the
+	  standard output (stdout). If any errors are found, a summary
+	  message is printed on	the standard error (stderr), else
+	  nothing is printed.
+
+     <B>DIAGNOSTICS</B>
+	  unavailable; recompile MA with -DVERIFY
+	       To use this routine, MA must be compiled	with cpp
+	       option -DVERIFY.
+
+	  %s block '%s', handle	%d, address 0x%lx:
+	       The following diagnostics are each prefixed by this
+	       information, which identifies the corrupted block.
+
+	  current checksum %lu != stored checksum %lu
+	       This indicates that the block has been corrupted	by
+	       having its internal state overwritten.
+	  current left signature %u != proper left signature %u
+	       This indicates that the block has been corrupted	by
+	       being overwritten at the	left end. The likely cause of
+	       this is an application indexing bug.
+	  current right	signature %u !=	proper right signature %u
+	       This indicates that the block has been corrupted	by
+	       being overwritten at the	right end. The likely cause of
+	       this is an application indexing bug.
+
+     <B>RETURN VALUE</B>
+	  C: MA_TRUE upon success (no errors), MA_FALSE	upon failure
+	  (errors).
+	  FORTRAN: .true. upon success (no errors), .false. upon
+	  failure (errors).
+
+     <B>SEE ALSO</B>
+	  MA(3), MA_set_auto_verify(3)
+
+     <B>AUTHOR</B>
+	  Gregory S. Thomas, Pacific Northwest Laboratory
