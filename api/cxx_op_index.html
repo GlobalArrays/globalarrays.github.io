@@ -1,7 +1,4 @@
 
----
-layout: default
----
 <!DOCTYPE html
 PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -13,7 +10,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         provides an efficient and portable &quot;shared-memory&quot;
         programming interface for distributed-memory computers." />
         <meta name="keywords" content="PNNL, Global Arrays, EMSL" />
-        <!--#include virtual="/docs/globalshared/globals.inc"-->
+        <!--#include virtual="/docs/global/shared/globals.inc"-->
         <style type="text/css">
         dt {
         font-size:small;
@@ -58,6 +55,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 <dt><a target="api" href="cxx_op_api.html#CREATE_IRREG">CREATE IRREG</a></dt>
 <dt><a target="api" href="cxx_op_api.html#CREATE_IRREG_CONFIG">CREATE IRREG CONFIG</a></dt>
 <dt><a target="api" href="cxx_op_api.html#CREATE_MUTEXES">CREATE MUTEXES</a></dt>
+<dt><a target="api" href="cxx_op_api.html#DEALLOCATE">DEALLOCATE</a></dt>
 <dt><a target="api" href="cxx_op_api.html#DESTROY">DESTROY</a></dt>
 <dt><a target="api" href="cxx_op_api.html#DESTROY_MUTEXES">DESTROY MUTEXES</a></dt>
 <dt><a target="api" href="cxx_op_api.html#DIAG">DIAG</a></dt>
@@ -91,6 +89,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 <dt><a target="api" href="cxx_op_api.html#HAS_GHOSTS">HAS GHOSTS</a></dt>
 <dt><a target="api" href="cxx_op_api.html#INIT_FENCE">INIT FENCE</a></dt>
 <dt><a target="api" href="cxx_op_api.html#INITIALIZE">INITIALIZE</a></dt>
+<dt><a target="api" href="cxx_op_api.html#INITIALIZE_COMM">INITIALIZE COMM</a></dt>
 <dt><a target="api" href="cxx_op_api.html#INITIALIZE_LTD">INITIALIZE LTD</a></dt>
 <dt><a target="api" href="cxx_op_api.html#INQUIRE">INQUIRE</a></dt>
 <dt><a target="api" href="cxx_op_api.html#INQUIRE_MEMORY">INQUIRE MEMORY</a></dt>
@@ -138,6 +137,8 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 <dt><a target="api" href="cxx_op_api.html#PGROUP_NODEID">PGROUP NODEID</a></dt>
 <dt><a target="api" href="cxx_op_api.html#PGROUP_SELF">PGROUP SELF</a></dt>
 <dt><a target="api" href="cxx_op_api.html#PGROUP_SET_DEFAULT">PGROUP SET DEFAULT</a></dt>
+<dt><a target="api" href="cxx_op_api.html#PGROUP_SPLIT">PGROUP SPLIT</a></dt>
+<dt><a target="api" href="cxx_op_api.html#PGROUP_SPLIT_IRREG">PGROUP SPLIT IRREG</a></dt>
 <dt><a target="api" href="cxx_op_api.html#PGROUP_SYNC">PGROUP SYNC</a></dt>
 <dt><a target="api" href="cxx_op_api.html#PRINT">PRINT</a></dt>
 <dt><a target="api" href="cxx_op_api.html#PRINT_DISTRIBUTION">PRINT DISTRIBUTION</a></dt>
@@ -146,6 +147,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 <dt><a target="api" href="cxx_op_api.html#PRINT_STATS">PRINT STATS</a></dt>
 <dt><a target="api" href="cxx_op_api.html#PROC_TOPOLOGY">PROC TOPOLOGY</a></dt>
 <dt><a target="api" href="cxx_op_api.html#PUT">PUT</a></dt>
+<dt><a target="api" href="cxx_op_api.html#RAND">RAND</a></dt>
 <dt><a target="api" href="cxx_op_api.html#READ_INC">READ INC</a></dt>
 <dt><a target="api" href="cxx_op_api.html#RECIP">RECIP</a></dt>
 <dt><a target="api" href="cxx_op_api.html#RECIP_PATCH">RECIP PATCH</a></dt>
@@ -190,6 +192,28 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 <dt><a target="api" href="cxx_op_api.html#SHIFT_DIAGONAL">SHIFT DIAGONAL</a></dt>
 <dt><a target="api" href="cxx_op_api.html#SOLVE">SOLVE</a></dt>
 <dt><a target="api" href="cxx_op_api.html#SPD_INVERT">SPD INVERT</a></dt>
+<dt><a target="api" href="cxx_op_api.html#SPRS_ARRAY_ACCESS_COL_BLOCK">SPRS ARRAY ACCESS COL BLOCK</a></dt>
+<dt><a target="api" href="cxx_op_api.html#SPRS_ARRAY_ADD_ELEMENT">SPRS ARRAY ADD ELEMENT</a></dt>
+<dt><a target="api" href="cxx_op_api.html#SPRS_ARRAY_ASSEMBLE">SPRS ARRAY ASSEMBLE</a></dt>
+<dt><a target="api" href="cxx_op_api.html#SPRS_ARRAY_COL_BLOCK_LIST">SPRS ARRAY COL BLOCK LIST</a></dt>
+<dt><a target="api" href="cxx_op_api.html#SPRS_ARRAY_COLUMN_DISTRIBUTION">SPRS ARRAY COLUMN DISTRIBUTION</a></dt>
+<dt><a target="api" href="cxx_op_api.html#SPRS_ARRAY_CREATE">SPRS ARRAY CREATE</a></dt>
+<dt><a target="api" href="cxx_op_api.html#SPRS_ARRAY_CREATE_FROM_DENSE">SPRS ARRAY CREATE FROM DENSE</a></dt>
+<dt><a target="api" href="cxx_op_api.html#SPRS_ARRAY_CREATE_FROM_SPARSE">SPRS ARRAY CREATE FROM SPARSE</a></dt>
+<dt><a target="api" href="cxx_op_api.html#SPRS_ARRAY_DESTROY">SPRS ARRAY DESTROY</a></dt>
+<dt><a target="api" href="cxx_op_api.html#SPRS_ARRAY_DIAG_LEFT_MULTIPLY">SPRS ARRAY DIAG LEFT MULTIPLY</a></dt>
+<dt><a target="api" href="cxx_op_api.html#SPRS_ARRAY_DIAG_RIGHT_MULTIPLY">SPRS ARRAY DIAG RIGHT MULTIPLY</a></dt>
+<dt><a target="api" href="cxx_op_api.html#SPRS_ARRAY_DNSSPRS_MULTIPLY">SPRS ARRAY DNSSPRS MULTIPLY</a></dt>
+<dt><a target="api" href="cxx_op_api.html#SPRS_ARRAY_DUPLICATE">SPRS ARRAY DUPLICATE</a></dt>
+<dt><a target="api" href="cxx_op_api.html#SPRS_ARRAY_EXPORT">SPRS ARRAY EXPORT</a></dt>
+<dt><a target="api" href="cxx_op_api.html#SPRS_ARRAY_GET_BLOCK">SPRS ARRAY GET BLOCK</a></dt>
+<dt><a target="api" href="cxx_op_api.html#SPRS_ARRAY_GET_COLUMN">SPRS ARRAY GET COLUMN</a></dt>
+<dt><a target="api" href="cxx_op_api.html#SPRS_ARRAY_GET_DIAG">SPRS ARRAY GET DIAG</a></dt>
+<dt><a target="api" href="cxx_op_api.html#SPRS_ARRAY_MATMAT_MULTIPLY">SPRS ARRAY MATMAT MULTIPLY</a></dt>
+<dt><a target="api" href="cxx_op_api.html#SPRS_ARRAY_MATVEC_MULTIPLY">SPRS ARRAY MATVEC MULTIPLY</a></dt>
+<dt><a target="api" href="cxx_op_api.html#SPRS_ARRAY_ROW_DISTRIBUTION">SPRS ARRAY ROW DISTRIBUTION</a></dt>
+<dt><a target="api" href="cxx_op_api.html#SPRS_ARRAY_SHIFT_DIAG">SPRS ARRAY SHIFT DIAG</a></dt>
+<dt><a target="api" href="cxx_op_api.html#SPRS_ARRAY_SPRSDNS_MULTIPLY">SPRS ARRAY SPRSDNS MULTIPLY</a></dt>
 <dt><a target="api" href="cxx_op_api.html#STEP_MAX">STEP MAX</a></dt>
 <dt><a target="api" href="cxx_op_api.html#STEP_MAX_PATCH">STEP MAX PATCH</a></dt>
 <dt><a target="api" href="cxx_op_api.html#STRIDED_ACC">STRIDED ACC</a></dt>
@@ -207,10 +231,35 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 <dt><a target="api" href="cxx_op_api.html#UPDATE_GHOST_DIR">UPDATE GHOST DIR</a></dt>
 <dt><a target="api" href="cxx_op_api.html#UPDATE_GHOSTS">UPDATE GHOSTS</a></dt>
 <dt><a target="api" href="cxx_op_api.html#USES_MA">USES MA</a></dt>
+<dt><a target="api" href="cxx_op_api.html#VERSION">VERSION</a></dt>
 <dt><a target="api" href="cxx_op_api.html#WTIME">WTIME</a></dt>
 <dt><a target="api" href="cxx_op_api.html#ZERO">ZERO</a></dt>
 <dt><a target="api" href="cxx_op_api.html#ZERO_DIAGONAL">ZERO DIAGONAL</a></dt>
 <dt><a target="api" href="cxx_op_api.html#ZERO_PATCH">ZERO PATCH</a></dt>
+<dt><a target="api" href="cxx_op_api.html#ACCESS_ELEMENT">ACCESS ELEMENT</a></dt>
+<dt><a target="api" href="cxx_op_api.html#ALLOCATE">ALLOCATE</a></dt>
+<dt><a target="api" href="cxx_op_api.html#ASSIGN_LOCAL_ELEMENT">ASSIGN LOCAL ELEMENT</a></dt>
+<dt><a target="api" href="cxx_op_api.html#CREATE_HANDLE">CREATE HANDLE</a></dt>
+<dt><a target="api" href="cxx_op_api.html#DESTROY">DESTROY</a></dt>
+<dt><a target="api" href="cxx_op_api.html#DISTRIBUTION">DISTRIBUTION</a></dt>
+<dt><a target="api" href="cxx_op_api.html#FREE">FREE</a></dt>
+<dt><a target="api" href="cxx_op_api.html#FREE_LOCAL_ELEMENT">FREE LOCAL ELEMENT</a></dt>
+<dt><a target="api" href="cxx_op_api.html#GATHER_SIZE">GATHER SIZE</a></dt>
+<dt><a target="api" href="cxx_op_api.html#GATHER">GATHER</a></dt>
+<dt><a target="api" href="cxx_op_api.html#GET_SIZE">GET SIZE</a></dt>
+<dt><a target="api" href="cxx_op_api.html#GET">GET</a></dt>
+<dt><a target="api" href="cxx_op_api.html#INITIALIZE">INITIALIZE</a></dt>
+<dt><a target="api" href="cxx_op_api.html#MALLOC">MALLOC</a></dt>
+<dt><a target="api" href="cxx_op_api.html#MEMZERO">MEMZERO</a></dt>
+<dt><a target="api" href="cxx_op_api.html#PUT">PUT</a></dt>
+<dt><a target="api" href="cxx_op_api.html#RELEASE_ELEMENT">RELEASE ELEMENT</a></dt>
+<dt><a target="api" href="cxx_op_api.html#RELEASE_UPDATE_ELEMENT">RELEASE UPDATE ELEMENT</a></dt>
+<dt><a target="api" href="cxx_op_api.html#SCATTER">SCATTER</a></dt>
+<dt><a target="api" href="cxx_op_api.html#SET_CHUNK">SET CHUNK</a></dt>
+<dt><a target="api" href="cxx_op_api.html#SET_DIMENSIONS">SET DIMENSIONS</a></dt>
+<dt><a target="api" href="cxx_op_api.html#SET_IRREG_DISTR">SET IRREG DISTR</a></dt>
+<dt><a target="api" href="cxx_op_api.html#SYNC">SYNC</a></dt>
+<dt><a target="api" href="cxx_op_api.html#TERMINATE">TERMINATE</a></dt>
 
     </dl>
     </body>
